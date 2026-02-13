@@ -1,0 +1,85 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T03:33:32.573Z",
+  "summary": "Diff adds client-side utilities for admin request triage (search/filter/sort), summary metrics, timestamp formatting, and CSV export, and updates AdminDashboardPage to use them. However, key acceptance criteria cannot be fully verified due to truncation in AdminDashboardPage.tsx and useQueries.ts, and the diff summary indicates several unrelated UI/theming/logo changes outside the requested admin-dashboard scope.",
+  "missing_requirements": [
+    {
+      "id": "REQ-15",
+      "requirement": "Edit dialog/details panel shows full customer-provided fields including address, and shows createdTime and updatedTime formatted consistently.",
+      "reason": "AdminDashboardPage.tsx is truncated before the edit dialog UI is shown; although formatTimestamp/formatShortDate are imported, the diff summary does not include evidence that address/createdTime/updatedTime are actually rendered in the edit dialog/details view.",
+      "evidence": [
+        "frontend/src/pages/AdminDashboardPage.tsx (truncated)",
+        "frontend/src/utils/formatters.ts"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "requirement": "After a successful save, the UI reflects updated values in the table without requiring a manual browser refresh.",
+      "reason": "handleSave closes the dialog after mutateAsync, but the diff does not show an explicit local state update nor a confirmed React Query invalidation/refetch path because both AdminDashboardPage.tsx and useAdminUpdateRequest onSuccess are truncated.",
+      "evidence": [
+        "frontend/src/pages/AdminDashboardPage.tsx (truncated)",
+        "frontend/src/hooks/useQueries.ts (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "A clear/reset control is available to return to the default view (no search, no filters, default sort).",
+      "reason": "A handleReset function is started but truncated before showing whether there is a UI control wired to it and whether it resets all controls including sort to default.",
+      "evidence": [
+        "frontend/src/pages/AdminDashboardPage.tsx (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "requirement": "After admin updates a request, invalidate/refetch ['requests','all'], and also invalidate at minimum ['requests','caller'] and ['request',<id>] where applicable.",
+      "reason": "useAdminUpdateRequest.onSuccess is truncated (ends at 'queryC...'), so the specific query keys invalidated cannot be verified from the provided diff summary.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts (truncated)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Global visual theme and Tailwind configuration changes (warm color palette, typography tokens).",
+      "reason": "Not requested by REQ-13 to REQ-17; appears to be unrelated styling/theming work.",
+      "evidence": [
+        "frontend/src/index.css (as described in frontend-file-summaries.txt)",
+        "frontend/tailwind.config.js (as described in frontend-file-summaries.txt)"
+      ]
+    },
+    {
+      "description": "Site header/logo changes and home page marketing content updates (uploaded VS logo usage, hero section changes).",
+      "reason": "Not requested by REQ-13 to REQ-17; these are outside the admin dashboard tooling scope.",
+      "evidence": [
+        "frontend/src/components/SiteHeader.tsx (as described in frontend-file-summaries.txt)",
+        "frontend/src/pages/HomePage.tsx (as described in frontend-file-summaries.txt)"
+      ]
+    },
+    {
+      "description": "Category grid navigation behavior updates (pre-select category when navigating to registration).",
+      "reason": "Not part of the admin dashboard triage/export/cache-invalidation requirements.",
+      "evidence": [
+        "frontend/src/components/CategoryGrid.tsx (as described in frontend-file-summaries.txt)"
+      ]
+    },
+    {
+      "description": "Login button behavior change to clear query cache on logout.",
+      "reason": "Not requested by REQ-13 to REQ-17; potentially impacts app behavior beyond admin dashboard.",
+      "evidence": [
+        "frontend/src/components/LoginButton.tsx (as described in frontend-file-summaries.txt)"
+      ]
+    }
+  ],
+  "confidence": 0.58,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/AdminDashboardPage.tsx",
+    "frontend/src/utils/adminRequestsMetrics.ts",
+    "frontend/src/utils/adminRequestsView.ts",
+    "frontend/src/utils/csvExport.ts",
+    "frontend/src/utils/formatters.ts",
+    "project_state.json"
+  ]
+}

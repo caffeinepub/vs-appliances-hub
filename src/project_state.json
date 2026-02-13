@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Website for \"VS Appliances hub\" offering services and spare parts for AC, washing machine, refrigerator, and electrical items, including customer service request registration, customer request tracking, and an admin-only dashboard to manage complaints, assign technicians, track spares used, and update request status (open/closed).",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-public-marketing-website-for-vs-appliances-hub-that-clearly-communicates-the-business-offers-services-and-spares-for-the-following-categories-ac-washing-machine-refrigerator-and-electrical",
+      "title": "Create a public marketing website for “VS Appliances Hub” that clearly communicates the business offers Services and Spares for the following categories: AC, Washing Machine, Refrigerator, and Electrical.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-category-grid-on-the-home-page-that-displays-an-image-card-for-each-category-ac-washing-machine-refrigerator-electrical-each-card-must-be-clickable-and-route-the-user-to-a-registration-flow-for-either-service-or-spares-related-to-that-category",
+      "title": "Add a category grid on the home page that displays an image card for each category (AC, Washing Machine, Refrigerator, Electrical). Each card must be clickable and route the user to a registration flow for either Service or Spares related to that category.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-customer-registration-submission-of-a-service-spares-request-a-form-that-captures-at-minimum-category-request-type-service-or-spares-customer-name-phone-number-address-problem-part-description-and-preferred-visit-date-optional-submit-must-create-a-request-and-show-a-success-confirmation-with-a-request-reference-id",
+      "title": "Implement customer registration/submission of a Service/Spares request: a form that captures at minimum category, request type (Service or Spares), customer name, phone number, address, problem/part description, and preferred visit/date (optional). Submit must create a request and show a success confirmation with a request reference/ID.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-my-requests-page-where-signed-in-customers-can-view-a-list-of-their-submitted-requests-showing-request-id-category-type-status-and-created-date-and-open-a-request-detail-view",
+      "title": "Add a “My Requests” page where signed-in customers can view a list of their submitted requests (showing request ID, category, type, status, and created date) and open a request detail view.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-define-and-apply-one-coherent-visual-theme-across-the-site-colors-typography-spacing-and-components-appropriate-for-a-home-appliance-repair-spares-business-avoiding-a-blue-purple-primary-palette",
+      "title": "Define and apply one coherent visual theme across the site (colors, typography, spacing, and components) appropriate for a home-appliance repair/spares business, avoiding a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-generated-category-images-and-logo-as-static-assets-under-frontend-public-assets-generated-and-render-them-in-the-ui-home-category-grid-and-site-header-hero-do-not-serve-these-images-from-the-backend",
+      "title": "Add the generated category images and logo as static assets under `frontend/public/assets/generated` and render them in the UI (home category grid and site header/hero). Do not serve these images from the backend.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-uploaded-vs-logo-to-the-app-as-a-static-asset-and-use-it-as-the-primary-site-logo-header-and-any-existing-logo-placements-replacing-the-current-generated-logo-reference",
+      "title": "Add the user-uploaded VS logo to the app as a static asset and use it as the primary site logo (header and any existing logo placements), replacing the current generated logo reference.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-separate-admin-page-in-the-frontend-that-is-only-accessible-to-admins-the-page-must-show-registered-complaints-requests-allow-assigning-a-technician-recording-spares-used-and-setting-status-to-open-or-closed",
+      "title": "Create a separate Admin page in the frontend that is only accessible to admins. The page must show registered complaints/requests, allow assigning a technician, recording spares used, and setting status to Open or Closed.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-customer-facing-request-tracking-ui-to-display-the-new-request-status-open-closed-and-any-admin-provided-fields-that-are-safe-to-show-to-customers-e-g-assigned-technician-and-spares-used-if-present",
+      "title": "Update customer-facing request tracking UI to display the new request status (Open/Closed) and any admin-provided fields that are safe to show to customers (e.g., assigned technician and spares used if present).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-admin-dashboard-page-to-support-admin-friendly-request-triage-tools-search-filtering-and-sorting-over-the-existing-request-list-returned-by-the-current-admin-api",
+      "title": "Extend the Admin Dashboard page to support admin-friendly request triage tools: search, filtering, and sorting over the existing request list returned by the current admin API.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-at-a-glance-operational-summary-widgets-to-the-admin-dashboard-using-the-already-fetched-request-list",
+      "title": "Add at-a-glance operational summary widgets to the Admin Dashboard using the already-fetched request list.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-request-editing-workflow-in-the-admin-dashboard-to-reduce-clicks-and-make-request-details-easier-to-review-during-updates",
+      "title": "Improve request editing workflow in the Admin Dashboard to reduce clicks and make request details easier to review during updates.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-export-capability-for-admins-to-download-the-currently-visible-post-filter-search-sort-request-list-from-the-admin-dashboard-as-a-csv-file",
+      "title": "Add an export capability for admins to download the currently visible (post-filter/search/sort) request list from the Admin Dashboard as a CSV file.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-admin-update-cache-invalidation-so-that-all-relevant-react-query-caches-refresh-correctly-after-an-admin-updates-a-request",
+      "title": "Fix admin update cache invalidation so that all relevant React Query caches refresh correctly after an admin updates a request.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a business website for VS Appliances hub to offer services and spare parts for AC, washing machine, refrigerator, and electrical categories",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Allow customers to register/submit a service request via the website",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Show category images (AC, washing machine, refrigerator, electrical) that users can click to register for service or spares",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Persist and expose service/spares requests in the Motoko backend actor with APIs to: create a request, fetch a request by ID, and list requests submitted by the currently authenticated user (Internet Identity).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Add and display the provided VS Appliances Hub logo in the site UI (e.g., header/hero)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Enable customers to track/view the status of their submitted requests (request tracking)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Create an admin-only page/dashboard to view registered complaints/requests, assign technicians, record spares used, and update request status (open/closed)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Extend the backend request data model to support admin workflow fields: request status (at minimum Open/Closed), assigned technician (free-text), spares used (free-text or a list), and created/updated timestamps.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add backend admin APIs (admin-only) to support the admin dashboard: list all requests, and update a request’s status, assigned technician, and spares used.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Extend/improve admin tools beyond the current admin dashboard capabilities (additional admin workflows/features to be defined)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "VS Appliances hub",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

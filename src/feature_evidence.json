@@ -1,0 +1,105 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-extend-the-admin-dashboard-page-to-support-admin-friendly-request-triage-tools-search-filtering-and-sorting-over-the-existing-request-list-returned-by-the-current-admin-api",
+      "featureTitle": "Extend the Admin Dashboard page to support admin-friendly request triage tools: search, filtering, and sorting over the existing request list returned by the current admin API.",
+      "files": [
+        "frontend/src/pages/AdminDashboardPage.tsx",
+        "frontend/src/utils/adminRequestsView.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-at-a-glance-operational-summary-widgets-to-the-admin-dashboard-using-the-already-fetched-request-list",
+      "featureTitle": "Add at-a-glance operational summary widgets to the Admin Dashboard using the already-fetched request list.",
+      "files": [
+        "frontend/src/pages/AdminDashboardPage.tsx",
+        "frontend/src/utils/adminRequestsMetrics.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-improve-request-editing-workflow-in-the-admin-dashboard-to-reduce-clicks-and-make-request-details-easier-to-review-during-updates",
+      "featureTitle": "Improve request editing workflow in the Admin Dashboard to reduce clicks and make request details easier to review during updates.",
+      "files": [
+        "frontend/src/pages/AdminDashboardPage.tsx",
+        "frontend/src/utils/formatters.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-export-capability-for-admins-to-download-the-currently-visible-post-filter-search-sort-request-list-from-the-admin-dashboard-as-a-csv-file",
+      "featureTitle": "Add an export capability for admins to download the currently visible (post-filter/search/sort) request list from the Admin Dashboard as a CSV file.",
+      "files": [
+        "frontend/src/pages/AdminDashboardPage.tsx",
+        "frontend/src/utils/csvExport.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-fix-admin-update-cache-invalidation-so-that-all-relevant-react-query-caches-refresh-correctly-after-an-admin-updates-a-request",
+      "featureTitle": "Fix admin update cache invalidation so that all relevant React Query caches refresh correctly after an admin updates a request.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/AdminDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-17"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

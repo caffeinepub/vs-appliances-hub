@@ -1,0 +1,96 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T03:33:32.576Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 5,
+    "implemented": 5,
+    "items": [
+      {
+        "id": "REQ-13",
+        "summary": "Extend the Admin Dashboard page to support admin-friendly request triage tools: search, filtering, and sorting over the existing request list returned by the current admin API.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/adminRequestsView.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/adminRequestsView.ts"
+        ]
+      },
+      {
+        "id": "REQ-14",
+        "summary": "Add at-a-glance operational summary widgets to the Admin Dashboard using the already-fetched request list.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/adminRequestsMetrics.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/adminRequestsMetrics.ts"
+        ]
+      },
+      {
+        "id": "REQ-15",
+        "summary": "Improve request editing workflow in the Admin Dashboard to reduce clicks and make request details easier to review during updates.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/formatters.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/formatters.ts"
+        ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "Add an export capability for admins to download the currently visible (post-filter/search/sort) request list from the Admin Dashboard as a CSV file.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/csvExport.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminDashboardPage.tsx",
+          "frontend/src/utils/csvExport.ts"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "Fix admin update cache invalidation so that all relevant React Query caches refresh correctly after an admin updates a request.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/AdminDashboardPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/AdminDashboardPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/AdminDashboardPage.tsx",
+    "frontend/src/utils/adminRequestsMetrics.ts",
+    "frontend/src/utils/adminRequestsView.ts",
+    "frontend/src/utils/csvExport.ts",
+    "frontend/src/utils/formatters.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup including routes for home, register request, success, request detail, my requests, and the new admin dashboard page.",
+  "frontend/src/components/PageLayout.tsx": "Root layout component that provides consistent header, footer with social links and attribution, and main content area using Outlet for nested routes.",
+  "frontend/src/components/SiteHeader.tsx": "Sticky header component with logo (now using uploaded VS logo), navigation links including conditional admin link for admin users, login button, and responsive mobile menu.",
+  "frontend/src/components/LoginButton.tsx": "Authentication button component that handles Internet Identity login/logout with loading states and clears query cache on logout.",
+  "frontend/src/components/CategoryGrid.tsx": "Grid component displaying four clickable category cards (AC, Washing Machine, Refrigerator, Electrical) with images that navigate to the registration page with pre-selected category.",
+  "frontend/src/components/RequireAuth.tsx": "Authentication guard component that displays a sign-in prompt for unauthenticated users and renders children for authenticated users.",
+  "frontend/src/pages/HomePage.tsx": "Landing page with hero section featuring the uploaded VS logo, business value proposition, feature highlights, and category grid for service registration.",
+  "frontend/src/pages/RegisterRequestPage.tsx": "Protected form page for submitting service/spares requests with validation, category selection, request type radio buttons, and customer information fields.",
+  "frontend/src/pages/RequestSuccessPage.tsx": "Success confirmation page displaying the submitted request ID with next steps and navigation to request details or home.",
+  "frontend/src/pages/RequestDetailPage.tsx": "Protected page displaying full request details including status badge, assigned technician and spares used when available with graceful fallbacks for missing fields.",
+  "frontend/src/pages/MyRequestsPage.tsx": "Protected page listing all requests for authenticated users with responsive table/card views showing status badges (Open/Closed) and navigation to individual request details.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations with proper cache invalidation that updates admin list, caller list, and individual request details after admin updates.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using warm orange/amber tones (avoiding blue/purple) for both light and dark modes with semantic tokens.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with warm appliance-service color palette, Inter font family, and custom design tokens.",
+  "frontend/src/pages/AdminDashboardPage.tsx": "Admin-only dashboard with comprehensive triage tools including search, multi-criteria filters, sorting, summary metrics cards, quick status toggle actions, enhanced edit dialog with full customer details and timestamps, CSV export, and proper React Query cache invalidation.",
+  "frontend/src/utils/adminRequestsView.ts": "Pure helper functions for client-side filtering, searching, and sorting of admin request lists with case-insensitive text matching and multi-criteria filtering.",
+  "frontend/src/utils/adminRequestsMetrics.ts": "Computes summary metrics (total, open, closed, unassigned counts) from request arrays for dashboard display.",
+  "frontend/src/utils/formatters.ts": "Centralized timestamp formatting utilities that convert bigint nanosecond timestamps to human-readable date strings with consistent formatting.",
+  "frontend/src/utils/csvExport.ts": "Client-side CSV export utility that properly escapes fields, formats request data, and triggers browser downloads with all required columns."
+}
