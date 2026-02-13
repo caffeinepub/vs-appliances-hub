@@ -8,18 +8,48 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const RequestStatus = IDL.Variant({
-  'closed' : IDL.Null,
-  'open' : IDL.Null,
-});
 export const UserRole = IDL.Variant({
   'admin' : IDL.Null,
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const Brand = IDL.Variant({
+  'lg' : IDL.Null,
+  'daikin' : IDL.Null,
+  'other' : IDL.Text,
+  'voltas' : IDL.Null,
+  'whirlpool' : IDL.Null,
+  'samsung' : IDL.Null,
+});
 export const RequestType = IDL.Variant({
   'service' : IDL.Null,
   'spares' : IDL.Null,
+});
+export const Technician = IDL.Record({
+  'id' : IDL.Text,
+  'name' : IDL.Text,
+  'notes' : IDL.Opt(IDL.Text),
+  'phone' : IDL.Opt(IDL.Text),
+});
+export const UserProfile = IDL.Record({
+  'name' : IDL.Text,
+  'email' : IDL.Opt(IDL.Text),
+  'phone' : IDL.Opt(IDL.Text),
+});
+export const Feedback = IDL.Record({
+  'customerName' : IDL.Text,
+  'technician' : IDL.Opt(IDL.Text),
+  'createdTime' : IDL.Nat64,
+  'ticketId' : IDL.Text,
+  'rating' : IDL.Nat,
+  'comments' : IDL.Opt(IDL.Text),
+});
+export const RequestStatus = IDL.Variant({
+  'assigned' : IDL.Null,
+  'open' : IDL.Null,
+  'completed' : IDL.Null,
+  'pendingSpares' : IDL.Null,
+  'enRoute' : IDL.Null,
 });
 export const Request = IDL.Record({
   'id' : IDL.Text,
@@ -32,35 +62,83 @@ export const Request = IDL.Record({
   'address' : IDL.Text,
   'sparesUsed' : IDL.Opt(IDL.Text),
   'category' : IDL.Text,
+  'brand' : Brand,
   'phoneNumber' : IDL.Text,
+  'location' : IDL.Text,
   'requestType' : RequestType,
   'assignedTechnician' : IDL.Opt(IDL.Text),
 });
-export const UserProfile = IDL.Record({
+export const InventoryItem = IDL.Record({
+  'id' : IDL.Text,
+  'updatedTime' : IDL.Nat64,
+  'threshold' : IDL.Nat,
   'name' : IDL.Text,
-  'email' : IDL.Opt(IDL.Text),
-  'phone' : IDL.Opt(IDL.Text),
+  'createdTime' : IDL.Nat64,
+  'quantity' : IDL.Nat,
+});
+export const InventoryLog = IDL.Record({
+  'id' : IDL.Text,
+  'itemId' : IDL.Text,
+  'technician' : IDL.Text,
+  'createdTime' : IDL.Nat64,
+  'ticketId' : IDL.Text,
+  'quantity' : IDL.Nat,
 });
 
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
-  'adminUpdateRequest' : IDL.Func(
-      [IDL.Text, IDL.Opt(RequestStatus), IDL.Opt(IDL.Text), IDL.Opt(IDL.Text)],
+  'addInventoryItem' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat, IDL.Nat], [], []),
+  'addInventoryLog' : IDL.Func([IDL.Text, IDL.Text, IDL.Text, IDL.Nat], [], []),
+  'addTechnician' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Opt(IDL.Text), IDL.Opt(IDL.Text)],
       [],
       [],
     ),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'assignTechnician' : IDL.Func([IDL.Text, IDL.Text], [], []),
   'createRequest' : IDL.Func(
-      [IDL.Text, IDL.Text, RequestType, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [
+        IDL.Text,
+        Brand,
+        IDL.Text,
+        RequestType,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+      ],
       [],
       [],
     ),
-  'getAllRequests' : IDL.Func([], [IDL.Vec(Request)], ['query']),
+  'getAllTechnicians' : IDL.Func([], [IDL.Vec(Technician)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getFeedbackByTechnician' : IDL.Func(
+      [IDL.Opt(IDL.Text)],
+      [IDL.Vec(Feedback)],
+      ['query'],
+    ),
+  'getFilteredRequests' : IDL.Func(
+      [
+        IDL.Opt(IDL.Text),
+        IDL.Opt(Brand),
+        IDL.Opt(IDL.Text),
+        IDL.Opt(RequestStatus),
+      ],
+      [IDL.Vec(Request)],
+      ['query'],
+    ),
+  'getInventoryItems' : IDL.Func([], [IDL.Vec(InventoryItem)], ['query']),
+  'getInventoryLogs' : IDL.Func([], [IDL.Vec(InventoryLog)], ['query']),
+  'getLowStockItems' : IDL.Func([], [IDL.Vec(InventoryItem)], ['query']),
   'getRequestById' : IDL.Func([IDL.Text], [IDL.Opt(Request)], ['query']),
   'getRequestsByCaller' : IDL.Func([], [IDL.Vec(Request)], ['query']),
+  'getTechnicianPerformance' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Nat, IDL.Nat))],
+      ['query'],
+    ),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
@@ -68,22 +146,65 @@ export const idlService = IDL.Service({
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-  'updateRequestStatus' : IDL.Func([IDL.Text, RequestStatus], [], []),
-  'updateSparesUsed' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'submitFeedback' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Opt(IDL.Text), IDL.Nat, IDL.Opt(IDL.Text)],
+      [],
+      [],
+    ),
+  'trackStatusById' : IDL.Func([IDL.Text], [IDL.Opt(Request)], ['query']),
+  'trackStatusByIdAndPhone' : IDL.Func(
+      [IDL.Text, IDL.Text],
+      [IDL.Opt(Request)],
+      ['query'],
+    ),
+  'updateInventoryItem' : IDL.Func([IDL.Text, IDL.Nat], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const RequestStatus = IDL.Variant({ 'closed' : IDL.Null, 'open' : IDL.Null });
   const UserRole = IDL.Variant({
     'admin' : IDL.Null,
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
+  const Brand = IDL.Variant({
+    'lg' : IDL.Null,
+    'daikin' : IDL.Null,
+    'other' : IDL.Text,
+    'voltas' : IDL.Null,
+    'whirlpool' : IDL.Null,
+    'samsung' : IDL.Null,
+  });
   const RequestType = IDL.Variant({
     'service' : IDL.Null,
     'spares' : IDL.Null,
+  });
+  const Technician = IDL.Record({
+    'id' : IDL.Text,
+    'name' : IDL.Text,
+    'notes' : IDL.Opt(IDL.Text),
+    'phone' : IDL.Opt(IDL.Text),
+  });
+  const UserProfile = IDL.Record({
+    'name' : IDL.Text,
+    'email' : IDL.Opt(IDL.Text),
+    'phone' : IDL.Opt(IDL.Text),
+  });
+  const Feedback = IDL.Record({
+    'customerName' : IDL.Text,
+    'technician' : IDL.Opt(IDL.Text),
+    'createdTime' : IDL.Nat64,
+    'ticketId' : IDL.Text,
+    'rating' : IDL.Nat,
+    'comments' : IDL.Opt(IDL.Text),
+  });
+  const RequestStatus = IDL.Variant({
+    'assigned' : IDL.Null,
+    'open' : IDL.Null,
+    'completed' : IDL.Null,
+    'pendingSpares' : IDL.Null,
+    'enRoute' : IDL.Null,
   });
   const Request = IDL.Record({
     'id' : IDL.Text,
@@ -96,25 +217,43 @@ export const idlFactory = ({ IDL }) => {
     'address' : IDL.Text,
     'sparesUsed' : IDL.Opt(IDL.Text),
     'category' : IDL.Text,
+    'brand' : Brand,
     'phoneNumber' : IDL.Text,
+    'location' : IDL.Text,
     'requestType' : RequestType,
     'assignedTechnician' : IDL.Opt(IDL.Text),
   });
-  const UserProfile = IDL.Record({
+  const InventoryItem = IDL.Record({
+    'id' : IDL.Text,
+    'updatedTime' : IDL.Nat64,
+    'threshold' : IDL.Nat,
     'name' : IDL.Text,
-    'email' : IDL.Opt(IDL.Text),
-    'phone' : IDL.Opt(IDL.Text),
+    'createdTime' : IDL.Nat64,
+    'quantity' : IDL.Nat,
+  });
+  const InventoryLog = IDL.Record({
+    'id' : IDL.Text,
+    'itemId' : IDL.Text,
+    'technician' : IDL.Text,
+    'createdTime' : IDL.Nat64,
+    'ticketId' : IDL.Text,
+    'quantity' : IDL.Nat,
   });
   
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
-    'adminUpdateRequest' : IDL.Func(
-        [
-          IDL.Text,
-          IDL.Opt(RequestStatus),
-          IDL.Opt(IDL.Text),
-          IDL.Opt(IDL.Text),
-        ],
+    'addInventoryItem' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Nat, IDL.Nat],
+        [],
+        [],
+      ),
+    'addInventoryLog' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Nat],
+        [],
+        [],
+      ),
+    'addTechnician' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Opt(IDL.Text), IDL.Opt(IDL.Text)],
         [],
         [],
       ),
@@ -123,8 +262,10 @@ export const idlFactory = ({ IDL }) => {
     'createRequest' : IDL.Func(
         [
           IDL.Text,
+          Brand,
           IDL.Text,
           RequestType,
+          IDL.Text,
           IDL.Text,
           IDL.Text,
           IDL.Text,
@@ -133,11 +274,34 @@ export const idlFactory = ({ IDL }) => {
         [],
         [],
       ),
-    'getAllRequests' : IDL.Func([], [IDL.Vec(Request)], ['query']),
+    'getAllTechnicians' : IDL.Func([], [IDL.Vec(Technician)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getFeedbackByTechnician' : IDL.Func(
+        [IDL.Opt(IDL.Text)],
+        [IDL.Vec(Feedback)],
+        ['query'],
+      ),
+    'getFilteredRequests' : IDL.Func(
+        [
+          IDL.Opt(IDL.Text),
+          IDL.Opt(Brand),
+          IDL.Opt(IDL.Text),
+          IDL.Opt(RequestStatus),
+        ],
+        [IDL.Vec(Request)],
+        ['query'],
+      ),
+    'getInventoryItems' : IDL.Func([], [IDL.Vec(InventoryItem)], ['query']),
+    'getInventoryLogs' : IDL.Func([], [IDL.Vec(InventoryLog)], ['query']),
+    'getLowStockItems' : IDL.Func([], [IDL.Vec(InventoryItem)], ['query']),
     'getRequestById' : IDL.Func([IDL.Text], [IDL.Opt(Request)], ['query']),
     'getRequestsByCaller' : IDL.Func([], [IDL.Vec(Request)], ['query']),
+    'getTechnicianPerformance' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Nat, IDL.Nat))],
+        ['query'],
+      ),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
@@ -145,8 +309,18 @@ export const idlFactory = ({ IDL }) => {
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-    'updateRequestStatus' : IDL.Func([IDL.Text, RequestStatus], [], []),
-    'updateSparesUsed' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'submitFeedback' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Opt(IDL.Text), IDL.Nat, IDL.Opt(IDL.Text)],
+        [],
+        [],
+      ),
+    'trackStatusById' : IDL.Func([IDL.Text], [IDL.Opt(Request)], ['query']),
+    'trackStatusByIdAndPhone' : IDL.Func(
+        [IDL.Text, IDL.Text],
+        [IDL.Opt(Request)],
+        ['query'],
+      ),
+    'updateInventoryItem' : IDL.Func([IDL.Text, IDL.Nat], [], []),
   });
 };
 

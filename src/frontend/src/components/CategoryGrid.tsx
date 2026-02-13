@@ -1,33 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Card, CardContent } from './ui/card';
 import { ArrowRight } from 'lucide-react';
-
-const categories = [
-  {
-    id: 'ac',
-    name: 'Air Conditioner',
-    image: '/assets/generated/category-ac.dim_800x600.png',
-    description: 'AC repair, maintenance & spare parts',
-  },
-  {
-    id: 'washing-machine',
-    name: 'Washing Machine',
-    image: '/assets/generated/category-washing-machine.dim_800x600.png',
-    description: 'Washing machine services & parts',
-  },
-  {
-    id: 'refrigerator',
-    name: 'Refrigerator',
-    image: '/assets/generated/category-refrigerator.dim_800x600.png',
-    description: 'Refrigerator repair & spare parts',
-  },
-  {
-    id: 'electrical',
-    name: 'Electrical',
-    image: '/assets/generated/category-electrical.dim_800x600.png',
-    description: 'Electrical services & components',
-  },
-];
+import { SERVICE_CATEGORIES } from '../constants/serviceCategories';
 
 export default function CategoryGrid() {
   const navigate = useNavigate();
@@ -37,8 +11,8 @@ export default function CategoryGrid() {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {categories.map((category) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {SERVICE_CATEGORIES.map((category) => (
         <Card
           key={category.id}
           className="group cursor-pointer overflow-hidden border-2 hover:border-primary hover:shadow-lg transition-all duration-300"
@@ -49,7 +23,14 @@ export default function CategoryGrid() {
               <img
                 src={category.image}
                 alt={category.name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  console.error(`Failed to load image: ${category.image}`);
+                }}
               />
             </div>
             <div className="p-5">

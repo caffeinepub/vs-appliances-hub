@@ -1,7 +1,8 @@
 import CategoryGrid from '../components/CategoryGrid';
 import { Button } from '../components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
-import { Wrench, Package, Clock, Shield } from 'lucide-react';
+import { Wrench, Package, Clock, Shield, Phone } from 'lucide-react';
+import { BRANDING } from '../constants/branding';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -14,26 +15,33 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-6 flex justify-center">
               <img
-                src="/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png"
-                alt="VS Appliances Hub"
+                src={BRANDING.logo.src}
+                alt={BRANDING.logo.alt}
                 className="h-20 w-20 object-contain"
               />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              VS Appliances Hub
+              VS Home Appliances Spares and Service
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
               Professional <span className="text-primary font-semibold">Services</span> and Quality{' '}
               <span className="text-primary font-semibold">Spare Parts</span> for all your appliance needs
             </p>
+            <div className="flex items-center justify-center gap-2 mb-8 text-lg">
+              <Phone className="h-5 w-5 text-primary" />
+              <a href={`tel:${BRANDING.phone}`} className="font-semibold text-primary hover:underline">
+                {BRANDING.phone}
+              </a>
+            </div>
             <div className="flex flex-wrap gap-4 justify-center text-sm md:text-base text-muted-foreground mb-10">
               <span className="px-4 py-2 bg-background border border-border rounded-full">Air Conditioners</span>
               <span className="px-4 py-2 bg-background border border-border rounded-full">Washing Machines</span>
               <span className="px-4 py-2 bg-background border border-border rounded-full">Refrigerators</span>
-              <span className="px-4 py-2 bg-background border border-border rounded-full">Electrical Services</span>
+              <span className="px-4 py-2 bg-background border border-border rounded-full">Geysers</span>
+              <span className="px-4 py-2 bg-background border border-border rounded-full">Water Purifiers</span>
             </div>
             <Button size="lg" onClick={() => navigate({ to: '/register' })} className="text-lg px-8 py-6">
-              Request Service Now
+              Book Now
             </Button>
           </div>
         </div>

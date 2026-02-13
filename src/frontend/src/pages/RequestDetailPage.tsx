@@ -7,13 +7,10 @@ import { Skeleton } from '../components/ui/skeleton';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import { ArrowLeft, AlertCircle, Package, Wrench } from 'lucide-react';
 import RequireAuth from '../components/RequireAuth';
-
-const categoryNames: Record<string, string> = {
-  ac: 'Air Conditioner',
-  'washing-machine': 'Washing Machine',
-  refrigerator: 'Refrigerator',
-  electrical: 'Electrical',
-};
+import { getCategoryName } from '../constants/serviceCategories';
+import { brandToString } from '../utils/brand';
+import { getStatusLabel, getStatusVariant } from '../utils/requestStatus';
+import FeedbackForm from '../components/feedback/FeedbackForm';
 
 export default function RequestDetailPage() {
   const { requestId } = useParams({ strict: false }) as { requestId: string };
@@ -63,9 +60,9 @@ export default function RequestDetailPage() {
     );
   }
 
-  const categoryName = categoryNames[request.category] || request.category;
+  const categoryName = getCategoryName(request.category);
   const isService = request.requestType === 'service';
-  const isOpen = request.status === 'open';
+  const isCompleted = request.status === 'completed';
 
   return (
     <RequireAuth>
@@ -88,8 +85,8 @@ export default function RequestDetailPage() {
                     {isService ? <Wrench className="h-3.5 w-3.5" /> : <Package className="h-3.5 w-3.5" />}
                     {isService ? 'Service' : 'Spares'}
                   </Badge>
-                  <Badge variant={isOpen ? 'default' : 'outline'}>
-                    {isOpen ? 'Open' : 'Closed'}
+                  <Badge variant={getStatusVariant(request.status)}>
+                    {getStatusLabel(request.status)}
                   </Badge>
                 </div>
               </div>
@@ -101,8 +98,16 @@ export default function RequestDetailPage() {
                   <p className="text-base font-medium text-foreground">{categoryName}</p>
                 </div>
                 <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Brand</h3>
+                  <p className="text-base font-medium text-foreground">{brandToString(request.brand)}</p>
+                </div>
+                <div>
                   <h3 className="text-sm font-medium text-muted-foreground mb-1">Request Type</h3>
                   <p className="text-base font-medium text-foreground">{isService ? 'Service / Repair' : 'Spare Parts'}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Location</h3>
+                  <p className="text-base font-medium text-foreground">{request.location}</p>
                 </div>
               </div>
 
@@ -150,6 +155,16 @@ export default function RequestDetailPage() {
                 </h3>
                 <p className="text-base text-foreground whitespace-pre-wrap leading-relaxed">{request.description}</p>
               </div>
+
+              {isCompleted && (
+                <div className="border-t border-border pt-6">
+                  <FeedbackForm
+                    ticketId={request.id}
+                    customerName={request.customerName}
+                    technician={request.assignedTechnician}
+                  />
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

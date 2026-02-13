@@ -1,125 +1,58 @@
 {
   "kind": "build_request",
-  "title": "Extend admin dashboard tools (filtering, search, bulk actions, export, and data refresh)",
+  "title": "Replace current VS logo image with newly uploaded image",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-13",
-      "text": "Extend the Admin Dashboard page to support admin-friendly request triage tools: search, filtering, and sorting over the existing request list returned by the current admin API.",
+      "id": "REQ-34",
+      "text": "Add the user-uploaded image `IMG_20260212_214859~2-1.png` as a static asset under `frontend/public/assets/generated` (standardized/optimized for web use) and replace the currently used VS logo image (`/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`) with this new asset everywhere the logo is rendered (at minimum: the header logo in `SiteHeader` and the hero logo in `HomePage`).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-4"
         ],
         "quotes": [
-          "Please extend admin tools"
+          "Remove VS image \nPlace above image"
         ]
       },
       "acceptanceCriteria": [
-        "Admin Dashboard includes a search input that filters the visible rows by at least Request ID, customer name, and phone number (case-insensitive for text fields).",
-        "Admin Dashboard includes filters for at least Status (Open/Closed/All), Category (AC/Washing Machine/Refrigerator/Electrical/All), and Type (Service/Spares/All).",
-        "Admin Dashboard includes a sort control (or sortable table headers) for at least Created time (newest/oldest) and Status.",
-        "Filters/search/sort are applied client-side without requiring new backend endpoints.",
-        "A clear/reset control is available to return to the default view (no search, no filters, default sort)."
+        "A new static image file derived from `IMG_20260212_214859~2-1.png` exists under `frontend/public/assets/generated` and is referenced via an `/assets/generated/...` URL.",
+        "`frontend/src/components/SiteHeader.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
+        "`frontend/src/pages/HomePage.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
+        "The new logo renders correctly on both desktop and mobile layouts without distortion (keeps aspect ratio) and without layout shifts in the header or hero sections."
       ]
     },
     {
-      "id": "REQ-14",
-      "text": "Add at-a-glance operational summary widgets to the Admin Dashboard using the already-fetched request list.",
+      "id": "REQ-35",
+      "text": "Verify there are no remaining references in the frontend codebase to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, so the uploaded image is the only logo shown to customers.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-4"
         ],
         "quotes": [
-          "Please extend admin tools"
+          "Remove VS image"
         ]
       },
       "acceptanceCriteria": [
-        "Admin Dashboard shows summary counts at minimum: Total requests, Open requests, Closed requests, and Unassigned (assignedTechnician is empty/null).",
-        "Summary values update automatically when the underlying request list changes (e.g., after edits and refetch)."
-      ]
-    },
-    {
-      "id": "REQ-15",
-      "text": "Improve request editing workflow in the Admin Dashboard to reduce clicks and make request details easier to review during updates.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Please extend admin tools"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The edit dialog (or an equivalent details panel) displays the full set of customer-provided fields for the selected request, including at least: address (in addition to existing fields like phone and description).",
-        "The edit dialog (or equivalent) displays timestamps for the request, including createdTime and updatedTime (formatted consistently with existing date formatting).",
-        "Admin can perform at least one quick action from the table row or details view to set status to Open/Closed without manually opening the status dropdown (e.g., a button or menu action), while keeping the existing full edit capability.",
-        "After a successful save, the UI reflects the updated values in the table without requiring a manual browser refresh."
-      ]
-    },
-    {
-      "id": "REQ-16",
-      "text": "Add an export capability for admins to download the currently visible (post-filter/search/sort) request list from the Admin Dashboard as a CSV file.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Please extend admin tools"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Admin Dashboard provides an \"Export CSV\" action.",
-        "Exported CSV includes columns for at least: request id, category, request type, customer name, phone number, status, assigned technician, spares used, created time, updated time.",
-        "Export output respects the current filters/search/sort (exports what the admin is viewing).",
-        "Export is generated entirely on the client (no new backend API required)."
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "text": "Fix admin update cache invalidation so that all relevant React Query caches refresh correctly after an admin updates a request.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Please extend admin tools"
-        ]
-      },
-      "acceptanceCriteria": [
-        "After admin updates a request, the Admin Dashboard list refetches/updates (query key ['requests','all']).",
-        "If the updated request is visible on customer pages, the caller’s list and details also update when navigated to (invalidate at minimum ['requests','caller'] and ['request', <id>] where applicable).",
-        "No changes are made to the immutable frontend hook files listed in SYSTEM_CONTEXT; changes are implemented in editable files only."
+        "Searching the frontend source for `vs-appliances-logo-uploaded.dim_512x512.png` returns zero matches (or only legacy/commented references not used at runtime).",
+        "Previewing key pages (Home, Services, Track Status, Register, My Requests, Admin Login) shows the new uploaded logo in the header consistently."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
-    "Do not edit any files under frontend/src/components/ui (compose them only).",
-    "Do not edit immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
-    "Use English for all user-facing text."
+    "Do not serve images from the backend; all logo assets must be static files under `frontend/public/assets/generated`.",
+    "Do not edit files under `frontend/src/components/ui` or any other immutable paths listed in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Adding new backend request fields (e.g., internal admin notes, priority levels) and any related state migrations.",
-    "Introducing third-party admin/auth providers beyond Internet Identity.",
-    "Implementing real-time updates (WebSockets/push notifications)."
+    "Changing service category images or category mappings.",
+    "Any backend (Motoko) changes or data migrations.",
+    "Redesigning the overall site theme beyond swapping the logo image."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Optimize the uploaded logo image with transparent/white background preserved, centered composition, and export as a web-optimized PNG (IMG_20260212_214859~2-1.png > IMG_20260212_214859~2-1.dim_512x512.png)"
+    ],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

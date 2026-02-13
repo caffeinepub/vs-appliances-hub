@@ -8,13 +8,8 @@ import { Alert, AlertDescription } from '../components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { AlertCircle, FileText, Package, Wrench, Plus } from 'lucide-react';
 import RequireAuth from '../components/RequireAuth';
-
-const categoryNames: Record<string, string> = {
-  ac: 'Air Conditioner',
-  'washing-machine': 'Washing Machine',
-  refrigerator: 'Refrigerator',
-  electrical: 'Electrical',
-};
+import { getCategoryName } from '../constants/serviceCategories';
+import { getStatusLabel, getStatusVariant } from '../utils/requestStatus';
 
 export default function MyRequestsPage() {
   const navigate = useNavigate();
@@ -89,8 +84,7 @@ export default function MyRequestsPage() {
               <TableBody>
                 {requests.map((request) => {
                   const isService = request.requestType === 'service';
-                  const categoryName = categoryNames[request.category] || request.category;
-                  const isOpen = request.status === 'open';
+                  const categoryName = getCategoryName(request.category);
 
                   return (
                     <TableRow key={request.id} className="cursor-pointer hover:bg-muted/50">
@@ -104,8 +98,8 @@ export default function MyRequestsPage() {
                       </TableCell>
                       <TableCell>{request.customerName}</TableCell>
                       <TableCell>
-                        <Badge variant={isOpen ? 'default' : 'outline'}>
-                          {isOpen ? 'Open' : 'Closed'}
+                        <Badge variant={getStatusVariant(request.status)}>
+                          {getStatusLabel(request.status)}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
@@ -128,8 +122,7 @@ export default function MyRequestsPage() {
           <div className="md:hidden space-y-4">
             {requests.map((request) => {
               const isService = request.requestType === 'service';
-              const categoryName = categoryNames[request.category] || request.category;
-              const isOpen = request.status === 'open';
+              const categoryName = getCategoryName(request.category);
 
               return (
                 <Card
@@ -148,8 +141,8 @@ export default function MyRequestsPage() {
                           {isService ? <Wrench className="h-3 w-3" /> : <Package className="h-3 w-3" />}
                           {isService ? 'Service' : 'Spares'}
                         </Badge>
-                        <Badge variant={isOpen ? 'default' : 'outline'}>
-                          {isOpen ? 'Open' : 'Closed'}
+                        <Badge variant={getStatusVariant(request.status)}>
+                          {getStatusLabel(request.status)}
                         </Badge>
                       </div>
                     </div>

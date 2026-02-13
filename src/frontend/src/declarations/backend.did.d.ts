@@ -10,6 +10,36 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export type Brand = { 'lg' : null } |
+  { 'daikin' : null } |
+  { 'other' : string } |
+  { 'voltas' : null } |
+  { 'whirlpool' : null } |
+  { 'samsung' : null };
+export interface Feedback {
+  'customerName' : string,
+  'technician' : [] | [string],
+  'createdTime' : bigint,
+  'ticketId' : string,
+  'rating' : bigint,
+  'comments' : [] | [string],
+}
+export interface InventoryItem {
+  'id' : string,
+  'updatedTime' : bigint,
+  'threshold' : bigint,
+  'name' : string,
+  'createdTime' : bigint,
+  'quantity' : bigint,
+}
+export interface InventoryLog {
+  'id' : string,
+  'itemId' : string,
+  'technician' : string,
+  'createdTime' : bigint,
+  'ticketId' : string,
+  'quantity' : bigint,
+}
 export interface Request {
   'id' : string,
   'customerName' : string,
@@ -21,14 +51,25 @@ export interface Request {
   'address' : string,
   'sparesUsed' : [] | [string],
   'category' : string,
+  'brand' : Brand,
   'phoneNumber' : string,
+  'location' : string,
   'requestType' : RequestType,
   'assignedTechnician' : [] | [string],
 }
-export type RequestStatus = { 'closed' : null } |
-  { 'open' : null };
+export type RequestStatus = { 'assigned' : null } |
+  { 'open' : null } |
+  { 'completed' : null } |
+  { 'pendingSpares' : null } |
+  { 'enRoute' : null };
 export type RequestType = { 'service' : null } |
   { 'spares' : null };
+export interface Technician {
+  'id' : string,
+  'name' : string,
+  'notes' : [] | [string],
+  'phone' : [] | [string],
+}
 export interface UserProfile {
   'name' : string,
   'email' : [] | [string],
@@ -39,26 +80,52 @@ export type UserRole = { 'admin' : null } |
   { 'guest' : null };
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
-  'adminUpdateRequest' : ActorMethod<
-    [string, [] | [RequestStatus], [] | [string], [] | [string]],
+  'addInventoryItem' : ActorMethod<[string, string, bigint, bigint], undefined>,
+  'addInventoryLog' : ActorMethod<[string, string, string, bigint], undefined>,
+  'addTechnician' : ActorMethod<
+    [string, string, [] | [string], [] | [string]],
     undefined
   >,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'assignTechnician' : ActorMethod<[string, string], undefined>,
   'createRequest' : ActorMethod<
-    [string, string, RequestType, string, string, string, string],
+    [
+      string,
+      Brand,
+      string,
+      RequestType,
+      string,
+      string,
+      string,
+      string,
+      string,
+    ],
     undefined
   >,
-  'getAllRequests' : ActorMethod<[], Array<Request>>,
+  'getAllTechnicians' : ActorMethod<[], Array<Technician>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getFeedbackByTechnician' : ActorMethod<[[] | [string]], Array<Feedback>>,
+  'getFilteredRequests' : ActorMethod<
+    [[] | [string], [] | [Brand], [] | [string], [] | [RequestStatus]],
+    Array<Request>
+  >,
+  'getInventoryItems' : ActorMethod<[], Array<InventoryItem>>,
+  'getInventoryLogs' : ActorMethod<[], Array<InventoryLog>>,
+  'getLowStockItems' : ActorMethod<[], Array<InventoryItem>>,
   'getRequestById' : ActorMethod<[string], [] | [Request]>,
   'getRequestsByCaller' : ActorMethod<[], Array<Request>>,
+  'getTechnicianPerformance' : ActorMethod<[], Array<[string, bigint, bigint]>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
-  'updateRequestStatus' : ActorMethod<[string, RequestStatus], undefined>,
-  'updateSparesUsed' : ActorMethod<[string, string], undefined>,
+  'submitFeedback' : ActorMethod<
+    [string, string, [] | [string], bigint, [] | [string]],
+    undefined
+  >,
+  'trackStatusById' : ActorMethod<[string], [] | [Request]>,
+  'trackStatusByIdAndPhone' : ActorMethod<[string, string], [] | [Request]>,
+  'updateInventoryItem' : ActorMethod<[string, bigint], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

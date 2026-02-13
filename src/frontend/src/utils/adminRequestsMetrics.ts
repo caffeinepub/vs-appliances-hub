@@ -1,9 +1,10 @@
-import { Request } from '../backend';
+import { Request, RequestStatus } from '../backend';
 
 export interface RequestMetrics {
   total: number;
   open: number;
-  closed: number;
+  assigned: number;
+  completed: number;
   unassigned: number;
 }
 
@@ -14,15 +15,18 @@ export function computeMetrics(requests: Request[]): RequestMetrics {
   const metrics: RequestMetrics = {
     total: requests.length,
     open: 0,
-    closed: 0,
+    assigned: 0,
+    completed: 0,
     unassigned: 0,
   };
   
   for (const request of requests) {
-    if (request.status === 'open') {
+    if (request.status === RequestStatus.open) {
       metrics.open++;
-    } else if (request.status === 'closed') {
-      metrics.closed++;
+    } else if (request.status === RequestStatus.assigned || request.status === RequestStatus.enRoute) {
+      metrics.assigned++;
+    } else if (request.status === RequestStatus.completed) {
+      metrics.completed++;
     }
     
     if (!request.assignedTechnician || request.assignedTechnician.trim() === '') {

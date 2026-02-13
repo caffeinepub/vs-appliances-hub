@@ -9,16 +9,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { RadioGroup, RadioGroupItem } from '../components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Alert, AlertDescription } from '../components/ui/alert';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { RequestType } from '../backend';
 import RequireAuth from '../components/RequireAuth';
-
-const categories = [
-  { id: 'ac', name: 'Air Conditioner' },
-  { id: 'washing-machine', name: 'Washing Machine' },
-  { id: 'refrigerator', name: 'Refrigerator' },
-  { id: 'electrical', name: 'Electrical' },
-];
+import { SERVICE_CATEGORIES } from '../constants/serviceCategories';
+import { COMMON_BRANDS, stringToBrand } from '../utils/brand';
 
 export default function RegisterRequestPage() {
   const navigate = useNavigate();
@@ -26,10 +21,13 @@ export default function RegisterRequestPage() {
   const createRequest = useCreateRequest();
 
   const [category, setCategory] = useState(search.category || '');
+  const [brand, setBrand] = useState('');
+  const [otherBrand, setOtherBrand] = useState('');
   const [requestType, setRequestType] = useState<'service' | 'spares'>('service');
   const [customerName, setCustomerName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
+  const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -43,12 +41,15 @@ export default function RegisterRequestPage() {
     const newErrors: Record<string, string> = {};
 
     if (!category) newErrors.category = 'Please select a category';
+    if (!brand) newErrors.brand = 'Please select a brand';
+    if (brand === 'other' && !otherBrand.trim()) newErrors.otherBrand = 'Please specify the brand';
     if (!customerName.trim()) newErrors.customerName = 'Name is required';
     if (!phoneNumber.trim()) newErrors.phoneNumber = 'Phone number is required';
     else if (!/^\+?[\d\s-()]{10,}$/.test(phoneNumber)) {
       newErrors.phoneNumber = 'Please enter a valid phone number';
     }
     if (!address.trim()) newErrors.address = 'Address is required';
+    if (!location.trim()) newErrors.location = 'Location is required';
     if (!description.trim()) newErrors.description = 'Description is required';
 
     setErrors(newErrors);
@@ -61,15 +62,18 @@ export default function RegisterRequestPage() {
     if (!validateForm()) return;
 
     const requestId = `REQ-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const brandValue = stringToBrand(brand, otherBrand);
 
     try {
       await createRequest.mutateAsync({
         id: requestId,
+        brand: brandValue,
         category,
         requestType: requestType === 'service' ? RequestType.service : RequestType.spares,
         customerName: customerName.trim(),
         phoneNumber: phoneNumber.trim(),
         address: address.trim(),
+        location: location.trim(),
         description: description.trim(),
       });
 
@@ -100,7 +104,7 @@ export default function RegisterRequestPage() {
                       <SelectValue placeholder="Select appliance category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((cat) => (
+                      {SERVICE_CATEGORIES.map((cat) => (
                         <SelectItem key={cat.id} value={cat.id}>
                           {cat.name}
                         </SelectItem>
@@ -109,6 +113,39 @@ export default function RegisterRequestPage() {
                   </Select>
                   {errors.category && <p className="text-sm text-destructive">{errors.category}</p>}
                 </div>
+
+                {/* Brand Selection */}
+                <div className="space-y-2">
+                  <Label htmlFor="brand">Brand *</Label>
+                  <Select value={brand} onValueChange={setBrand}>
+                    <SelectTrigger id="brand" className={errors.brand ? 'border-destructive' : ''}>
+                      <SelectValue placeholder="Select brand" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {COMMON_BRANDS.map((b) => (
+                        <SelectItem key={b.value} value={b.value}>
+                          {b.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.brand && <p className="text-sm text-destructive">{errors.brand}</p>}
+                </div>
+
+                {/* Other Brand Input */}
+                {brand === 'other' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="otherBrand">Specify Brand *</Label>
+                    <Input
+                      id="otherBrand"
+                      value={otherBrand}
+                      onChange={(e) => setOtherBrand(e.target.value)}
+                      placeholder="Enter brand name"
+                      className={errors.otherBrand ? 'border-destructive' : ''}
+                    />
+                    {errors.otherBrand && <p className="text-sm text-destructive">{errors.otherBrand}</p>}
+                  </div>
+                )}
 
                 {/* Request Type */}
                 <div className="space-y-3">
@@ -150,7 +187,7 @@ export default function RegisterRequestPage() {
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 9701078342"
                     className={errors.phoneNumber ? 'border-destructive' : ''}
                   />
                   {errors.phoneNumber && <p className="text-sm text-destructive">{errors.phoneNumber}</p>}
@@ -168,6 +205,19 @@ export default function RegisterRequestPage() {
                     className={errors.address ? 'border-destructive' : ''}
                   />
                   {errors.address && <p className="text-sm text-destructive">{errors.address}</p>}
+                </div>
+
+                {/* Location */}
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location (Locality/Landmark/Pincode) *</Label>
+                  <Input
+                    id="location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g., Srikalahasti, Near Temple, 517644"
+                    className={errors.location ? 'border-destructive' : ''}
+                  />
+                  {errors.location && <p className="text-sm text-destructive">{errors.location}</p>}
                 </div>
 
                 {/* Description */}

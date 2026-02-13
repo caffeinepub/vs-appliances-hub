@@ -65,10 +65,15 @@ export function sortRequests(requests: Request[], sortBy: SortOption): Request[]
       return sorted.sort((a, b) => Number(a.createdTime - b.createdTime));
     case 'status':
       return sorted.sort((a, b) => {
-        // Open first, then closed
-        if (a.status === 'open' && b.status === 'closed') return -1;
-        if (a.status === 'closed' && b.status === 'open') return 1;
-        return 0;
+        // Priority order: open > assigned > enRoute > pendingSpares > completed
+        const statusOrder: Record<RequestStatus, number> = {
+          [RequestStatus.open]: 1,
+          [RequestStatus.assigned]: 2,
+          [RequestStatus.enRoute]: 3,
+          [RequestStatus.pendingSpares]: 4,
+          [RequestStatus.completed]: 5,
+        };
+        return statusOrder[a.status] - statusOrder[b.status];
       });
     default:
       return sorted;

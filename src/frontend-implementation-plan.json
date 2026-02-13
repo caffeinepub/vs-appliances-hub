@@ -1,113 +1,57 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Admin Dashboard triage tools, summaries, editing UX, CSV export, and React Query cache refresh",
+  "title": "Swap VS logo to newly uploaded optimized static asset",
   "requirements": [
     {
-      "id": "REQ-13",
-      "summary": "Add client-side search, filtering, sorting, and reset controls to the Admin Dashboard request list (using already-fetched admin data).",
+      "id": "REQ-34",
+      "summary": "Add optimized uploaded logo as a generated static asset and replace the current VS logo in the header and home hero.",
       "acceptanceCriteria": [
-        "Admin Dashboard includes a search input that filters the visible rows by at least Request ID, customer name, and phone number (case-insensitive for text fields).",
-        "Admin Dashboard includes filters for at least Status (Open/Closed/All), Category (AC/Washing Machine/Refrigerator/Electrical/All), and Type (Service/Spares/All).",
-        "Admin Dashboard includes a sort control (or sortable table headers) for at least Created time (newest/oldest) and Status.",
-        "Filters/search/sort are applied client-side without requiring new backend endpoints.",
-        "A clear/reset control is available to return to the default view (no search, no filters, default sort)."
+        "A new static image file derived from `IMG_20260212_214859~2-1.png` exists under `frontend/public/assets/generated` and is referenced via an `/assets/generated/...` URL.",
+        "`frontend/src/components/SiteHeader.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
+        "`frontend/src/pages/HomePage.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
+        "The new logo renders correctly on both desktop and mobile layouts without distortion (keeps aspect ratio) and without layout shifts in the header or hero sections."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/AdminDashboardPage.tsx",
-          "operation": "modify",
-          "description": "Implement admin triage controls (search, filter, sort, reset) and apply them client-side to the already-fetched request list. Keep admin-only access behavior by continuing to rely on existing role checks (authorization component via existing isCallerAdmin flow). Verify the component's usage instructions before implementing."
+          "path": "frontend/public/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png",
+          "operation": "create",
+          "description": "Create a web-optimized PNG derived from `IMG_20260212_214859~2-1.png`, preserving transparent/white background, centered composition, sized to 512x512."
         },
         {
-          "path": "frontend/src/utils/adminRequestsView.ts",
-          "operation": "create",
-          "description": "Add reusable pure helpers for Admin Dashboard list triage (normalize text for case-insensitive search, apply filters, apply sorting, and return the derived visible list) so filtering/search/sorting stays consistent and testable. Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/SiteHeader.tsx",
+          "operation": "modify",
+          "description": "Replace the logo image source `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` with `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` and ensure the rendered logo keeps aspect ratio and reserves space (avoid layout shift) for both desktop and mobile header layouts."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Replace the hero logo image source `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` with `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` and ensure the rendered logo keeps aspect ratio and does not cause layout shifts."
         }
       ]
     },
     {
-      "id": "REQ-14",
-      "summary": "Add operational summary widgets (counts) on the Admin Dashboard derived from the already-fetched request list.",
+      "id": "REQ-35",
+      "summary": "Remove remaining primary-branding references to the previous VS logo so the new uploaded logo is the only one shown across the app.",
       "acceptanceCriteria": [
-        "Admin Dashboard shows summary counts at minimum: Total requests, Open requests, Closed requests, and Unassigned (assignedTechnician is empty/null).",
-        "Summary values update automatically when the underlying request list changes (e.g., after edits and refetch)."
+        "Searching the frontend source for `vs-appliances-logo-uploaded.dim_512x512.png` returns zero matches (or only legacy/commented references not used at runtime).",
+        "Previewing key pages (Home, Services, Track Status, Register, My Requests, Admin Login) shows the new uploaded logo in the header consistently."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/AdminDashboardPage.tsx",
-          "operation": "modify",
-          "description": "Add a compact summary section (e.g., cards) above the table showing Total, Open, Closed, and Unassigned counts computed from the fetched request list, updating automatically when query data changes. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/utils/adminRequestsMetrics.ts",
+          "path": "frontend/src/constants/branding.ts",
           "operation": "create",
-          "description": "Add helper(s) to compute summary metrics (total/open/closed/unassigned) from the request list to keep UI logic simple and ensure automatic recomputation when inputs change. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-15",
-      "summary": "Improve Admin Dashboard request editing for faster triage: richer details view, quick status actions, and immediate UI updates after save.",
-      "acceptanceCriteria": [
-        "The edit dialog (or an equivalent details panel) displays the full set of customer-provided fields for the selected request, including at least: address (in addition to existing fields like phone and description).",
-        "The edit dialog (or equivalent) displays timestamps for the request, including createdTime and updatedTime (formatted consistently with existing date formatting).",
-        "Admin can perform at least one quick action from the table row or details view to set status to Open/Closed without manually opening the status dropdown (e.g., a button or menu action), while keeping the existing full edit capability.",
-        "After a successful save, the UI reflects the updated values in the table without requiring a manual browser refresh."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AdminDashboardPage.tsx",
-          "operation": "modify",
-          "description": "Enhance the edit dialog to show additional request details (including address and both createdTime/updatedTime using the existing formatting approach). Add quick row-level or dialog-level status toggle actions (Open/Close) while preserving full edit controls. Ensure the table reflects updates immediately by using React Query invalidation and/or local derived state updates after successful save. Verify the component's usage instructions before implementing."
+          "description": "Introduce a single source of truth for branding assets (e.g., exported logo src and alt text) pointing to `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` so future pages/components don’t reintroduce the old logo path."
         },
         {
-          "path": "frontend/src/utils/formatters.ts",
-          "operation": "create",
-          "description": "Centralize formatting helpers used by the Admin Dashboard (e.g., consistent bigint timestamp formatting) to ensure created/updated timestamps display consistently across the page. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-16",
-      "summary": "Add a client-side CSV export for the currently visible (post-filter/search/sort) Admin Dashboard request list.",
-      "acceptanceCriteria": [
-        "Admin Dashboard provides an \"Export CSV\" action.",
-        "Exported CSV includes columns for at least: request id, category, request type, customer name, phone number, status, assigned technician, spares used, created time, updated time.",
-        "Export output respects the current filters/search/sort (exports what the admin is viewing).",
-        "Export is generated entirely on the client (no new backend API required)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AdminDashboardPage.tsx",
+          "path": "frontend/src/components/SiteHeader.tsx",
           "operation": "modify",
-          "description": "Add an \"Export CSV\" action that exports the currently visible (already filtered/searched/sorted) list and triggers a client-side download. Ensure required columns are included and timestamps are formatted consistently. Verify the component's usage instructions before implementing."
+          "description": "Refactor to consume the centralized branding constant(s) so no hardcoded legacy logo path remains in the header."
         },
         {
-          "path": "frontend/src/utils/csvExport.ts",
-          "operation": "create",
-          "description": "Implement a small client-side CSV generator and download helper (proper escaping/quoting, header ordering) for exporting the visible request rows with required columns. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "summary": "Fix React Query cache invalidation after admin updates so admin list, caller list, and request details update when revisited, without touching immutable hook files.",
-      "acceptanceCriteria": [
-        "After admin updates a request, the Admin Dashboard list refetches/updates (query key ['requests','all']).",
-        "If the updated request is visible on customer pages, the caller’s list and details also update when navigated to (invalidate at minimum ['requests','caller'] and ['request', <id>] where applicable).",
-        "No changes are made to the immutable frontend hook files listed in SYSTEM_CONTEXT; changes are implemented in editable files only."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/pages/HomePage.tsx",
           "operation": "modify",
-          "description": "Update the admin update mutation success handling to invalidate the specific React Query keys required: at minimum ['requests','all'], ['requests','caller'], and ['request', id] (using the mutation variables). Keep changes confined to editable files only (do not modify immutable hook paths). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/AdminDashboardPage.tsx",
-          "operation": "modify",
-          "description": "Ensure the Admin Dashboard UI correctly reflects query refresh after updates (e.g., relying on the corrected query invalidation behavior and/or updating local UI state to close dialogs and show refreshed table values). Verify the component's usage instructions before implementing."
+          "description": "Refactor to consume the centralized branding constant(s) so no hardcoded legacy logo path remains in the hero section."
         }
       ]
     }
