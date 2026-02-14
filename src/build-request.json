@@ -1,58 +1,57 @@
 {
   "kind": "build_request",
-  "title": "Replace current VS logo image with newly uploaded image",
+  "title": "Add reusable image component (“image code”) with fallback handling",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-34",
-      "text": "Add the user-uploaded image `IMG_20260212_214859~2-1.png` as a static asset under `frontend/public/assets/generated` (standardized/optimized for web use) and replace the currently used VS logo image (`/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`) with this new asset everywhere the logo is rendered (at minimum: the header logo in `SiteHeader` and the hero logo in `HomePage`).",
+      "id": "REQ-1",
+      "text": "Create a reusable React/TypeScript image component that encapsulates common image behavior (loading attributes, error handling, and a visual fallback) so the app has a single, consistent “image code” pattern.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-5"
         ],
         "quotes": [
-          "Remove VS image \nPlace above image"
+          "Give me Image code"
         ]
       },
       "acceptanceCriteria": [
-        "A new static image file derived from `IMG_20260212_214859~2-1.png` exists under `frontend/public/assets/generated` and is referenced via an `/assets/generated/...` URL.",
-        "`frontend/src/components/SiteHeader.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
-        "`frontend/src/pages/HomePage.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
-        "The new logo renders correctly on both desktop and mobile layouts without distortion (keeps aspect ratio) and without layout shifts in the header or hero sections."
+        "A new reusable image component exists (e.g., `frontend/src/components/AppImage.tsx`) that wraps an `<img>` element.",
+        "The component supports: `src`, `alt`, `className`, optional `loading`/`decoding`, and an `onError` behavior that shows a fallback UI instead of a broken image icon.",
+        "Fallback UI is accessible (keeps meaningful alt/aria labeling) and visually reasonable with Tailwind styling.",
+        "The component does not rely on backend calls and uses only static asset paths (e.g., `/assets/generated/...`)."
       ]
     },
     {
-      "id": "REQ-35",
-      "text": "Verify there are no remaining references in the frontend codebase to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, so the uploaded image is the only logo shown to customers.",
+      "id": "REQ-2",
+      "text": "Refactor existing image usages to use the new reusable image component for consistency, specifically in `BrandLogo` and the service category cards grid.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-5"
         ],
         "quotes": [
-          "Remove VS image"
+          "Give me Image code"
         ]
       },
       "acceptanceCriteria": [
-        "Searching the frontend source for `vs-appliances-logo-uploaded.dim_512x512.png` returns zero matches (or only legacy/commented references not used at runtime).",
-        "Previewing key pages (Home, Services, Track Status, Register, My Requests, Admin Login) shows the new uploaded logo in the header consistently."
+        "`frontend/src/components/BrandLogo.tsx` uses the reusable image component and preserves its existing sizing API (`sm`/`md`/`lg`) and fallback behavior.",
+        "`frontend/src/components/CategoryGrid.tsx` uses the reusable image component and preserves existing hover/scale styling and lazy-loading behavior.",
+        "When an image fails to load, the UI does not show a broken image; it shows the defined fallback and the page layout remains stable."
       ]
     }
   ],
   "constraints": [
-    "Do not serve images from the backend; all logo assets must be static files under `frontend/public/assets/generated`.",
-    "Do not edit files under `frontend/src/components/ui` or any other immutable paths listed in SYSTEM_CONTEXT."
+    "Do not modify any files under `frontend/src/components/ui` (read-only UI primitives).",
+    "Do not modify files in the immutable paths list (e.g., `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`)."
   ],
   "nonGoals": [
-    "Changing service category images or category mappings.",
-    "Any backend (Motoko) changes or data migrations.",
-    "Redesigning the overall site theme beyond swapping the logo image."
+    "No backend (Motoko) changes.",
+    "No new image generation or changes to existing generated image files.",
+    "No changes to routing or adding new pages."
   ],
   "imageRequirements": {
-    "required": [
-      "Optimize the uploaded logo image with transparent/white background preserved, centered composition, and export as a web-optimized PNG (IMG_20260212_214859~2-1.png > IMG_20260212_214859~2-1.dim_512x512.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

@@ -1,11 +1,11 @@
 {
   "frontend/src/App.tsx": "Main application component with TanStack Router setup including routes for home, register request, success, request detail, my requests, and the new admin dashboard page.",
-  "frontend/src/components/PageLayout.tsx": "Root layout component that provides consistent header, footer with social links and attribution, and main content area using Outlet for nested routes.",
-  "frontend/src/components/SiteHeader.tsx": "Sticky header component with logo (now using the new uploaded VS logo from branding constants), navigation links including conditional admin link for admin users, login button, and responsive mobile menu.",
+  "frontend/src/components/PageLayout.tsx": "Root layout component with header, footer containing company info with updated location (Tirupathi, Andhra Pradesh), contact details including the new ContactInfoCompact component, quick links, social media icons, and attribution, wrapping nested routes via Outlet.",
+  "frontend/src/components/SiteHeader.tsx": "Sticky header component with BrandLogo, navigation links, responsive mobile menu, website link, and phone+location contact info positioned in the top-right for both desktop and mobile views.",
   "frontend/src/components/LoginButton.tsx": "Authentication button component that handles Internet Identity login/logout with loading states and clears query cache on logout.",
-  "frontend/src/components/CategoryGrid.tsx": "Grid component displaying six clickable category cards with optimized image loading (lazy loading, async decoding, error handling) that navigate to the registration page with pre-selected category while maintaining existing aspect-[4/3] layout and hover behavior.",
+  "frontend/src/components/CategoryGrid.tsx": "Grid component displaying six clickable category cards using AppImage with lazy loading, async decoding, and stable fallback rendering that preserves aspect-ratio layout and hover behavior.",
   "frontend/src/components/RequireAuth.tsx": "Authentication guard component that displays a sign-in prompt for unauthenticated users and renders children for authenticated users.",
-  "frontend/src/pages/HomePage.tsx": "Landing page with hero section featuring the new uploaded VS logo from branding constants, business value proposition, feature highlights, and category grid for service registration.",
+  "frontend/src/pages/HomePage.tsx": "Landing page with hero section using the new BrandLogo component with fallback support, category grid, and features section displaying expert services, quality spares, quick response, and trusted service.",
   "frontend/src/pages/RegisterRequestPage.tsx": "Protected form page for submitting service/spares requests with validation, category selection, request type radio buttons, and customer information fields.",
   "frontend/src/pages/RequestSuccessPage.tsx": "Success confirmation page displaying the submitted request ID with next steps and navigation to request details or home.",
   "frontend/src/pages/RequestDetailPage.tsx": "Protected page displaying full request details including status badge, assigned technician and spares used when available with graceful fallbacks for missing fields.",
@@ -20,5 +20,8 @@
   "frontend/src/utils/csvExport.ts": "Client-side CSV export utility that properly escapes fields, formats request data, and triggers browser downloads with all required columns.",
   "frontend/src/constants/serviceCategories.ts": "Service category definitions with inline documentation mapping the three uploaded images (AC wall unit, washing machine, refrigerator) to their respective v2 asset paths, maintaining all existing category IDs and image references.",
   "frontend/src/pages/ServicesPage.tsx": "Services listing page displaying all six categories with optimized thumbnail images (lazy loading, async decoding, error handling, flex-shrink-0 for fixed sizing) while preserving existing rounded styling and layout.",
-  "frontend/src/constants/branding.ts": "Centralized branding constants file providing a single source of truth for logo path, alt text, company name, and phone number used across the application."
+  "frontend/src/constants/branding.ts": "Centralized branding constants including logo path, company name, phone number, website domain, email (vsappliancessparesandservice@gmail.com), and location (Tirupathi, Andhra Pradesh) for consistent reuse across the application.",
+  "frontend/src/components/BrandLogo.tsx": "Reusable logo component with three size variants (sm/md/lg) that uses AppImage to display the VS logo with a branded fallback (rounded block with primary border/background) on load failure.",
+  "frontend/src/components/ContactInfoCompact.tsx": "Reusable contact information component supporting three modes (email-location, email-phone, phone-location) with appropriate icons and links, designed for both header and footer variants with responsive sizing.",
+  "frontend/src/components/AppImage.tsx": "Reusable image component that wraps <img> with typed props (src, alt, className, loading, decoding) and internal error state that renders an accessible Tailwind-styled fallback container instead of broken image icons."
 }

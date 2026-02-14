@@ -1,44 +1,38 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T04:47:44.457Z",
-  "summary": "Logo references in SiteHeader and HomePage were switched to a new branding constant pointing at `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png`, but the diff summary does not show the required optimized image being added under `frontend/public/assets/generated`, and it’s not possible to verify from the provided diff that all legacy logo references were removed across the entire frontend codebase.",
-  "missing_requirements": [
+  "generatedAt": "2026-02-13T07:09:00.828Z",
+  "summary": "REQ-1 and REQ-2 appear implemented: a new `AppImage` component was added with error-state fallback UI, and `BrandLogo` + `CategoryGrid` were refactored to use it with preserved sizing/hover/lazy-loading behavior. However, the diff summary also indicates unrelated routing/pages/admin-dashboard/theme changes that were not requested and violate non-goals.",
+  "missing_requirements": [],
+  "hallucinated_features": [
     {
-      "id": "REQ-34",
-      "requirement": "Add the user-uploaded image `IMG_20260212_214859~2-1.png` as a static asset under `frontend/public/assets/generated` (standardized/optimized for web use) and replace the currently used VS logo image with this new asset everywhere the logo is rendered.",
-      "reason": "The code now references `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png`, but the diff summary does not show any new file added under `frontend/public/assets/generated` (only a new TS constants file was added). Therefore the required static asset addition/optimization step is not evidenced.",
+      "description": "Added/modified routing and new pages including an admin dashboard page.",
+      "reason": "Non-goal explicitly states no changes to routing or adding new pages, but the diff summary claims router setup includes a new admin dashboard page and includes `AdminDashboardPage.tsx`.",
       "evidence": [
-        "frontend/src/constants/branding.ts (references /assets/generated/IMG_20260212_214859~2-1.dim_512x512.png)",
-        "file-diff summary shows only 1 added file: frontend/src/constants/branding.ts"
+        "frontend-file-summaries.txt (mentions `frontend/src/App.tsx` routes incl. \"new admin dashboard page\" and `frontend/src/pages/AdminDashboardPage.tsx`)"
       ]
     },
     {
-      "id": "REQ-35",
-      "requirement": "Verify there are no remaining references in the frontend codebase to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, so the uploaded image is the only logo shown to customers.",
-      "reason": "The diff demonstrates replacements in `SiteHeader` and `HomePage`, but does not provide evidence of a full codebase-wide removal (search/zero matches) for `vs-appliances-logo-uploaded.dim_512x512.png`, especially since the diff is truncated and other pages/components are not shown.",
+      "description": "Major UI/layout changes to global styles, Tailwind theme, header/footer content, and new components unrelated to image handling.",
+      "reason": "BuildRequest is narrowly scoped to adding a reusable image component and refactoring two usages; the summary describes wide-ranging style/theme and layout updates not requested.",
       "evidence": [
-        "frontend/src/components/SiteHeader.tsx (now uses BRANDING.logo.src)",
-        "frontend/src/pages/HomePage.tsx (now uses BRANDING.logo.src)",
-        "Diff summary is truncated; no global search results provided"
+        "frontend-file-summaries.txt (mentions modifications to `frontend/src/index.css`, `frontend/tailwind.config.js`, `frontend/src/components/PageLayout.tsx`, `frontend/src/components/SiteHeader.tsx`, and other unrelated files)"
       ]
-    }
-  ],
-  "hallucinated_features": [
+    },
     {
-      "description": "Introduced centralized branding constants module (`frontend/src/constants/branding.ts`) as a single source of truth for logo/company name/phone.",
-      "reason": "The BuildRequest only asks to add/optimize the new logo asset under `frontend/public/assets/generated` and replace logo usages; it does not request adding a new branding constants module or centralizing phone/company name.",
+      "description": "Authentication/React Query/backend-operation hook changes (e.g., cache invalidation updates).",
+      "reason": "Not requested by REQ-1/REQ-2 and outside the stated scope; also suggests broader application behavior changes.",
       "evidence": [
-        "frontend/src/constants/branding.ts"
+        "frontend-file-summaries.txt (mentions `frontend/src/components/LoginButton.tsx` changes and `frontend/src/hooks/useQueries.ts` changes)"
       ]
     }
   ],
   "confidence": 0.72,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/SiteHeader.tsx",
-    "frontend/src/constants/branding.ts",
-    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/components/AppImage.tsx",
+    "frontend/src/components/BrandLogo.tsx",
+    "frontend/src/components/CategoryGrid.tsx",
     "project_state.json"
   ]
 }

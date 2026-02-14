@@ -1,57 +1,43 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Swap VS logo to newly uploaded optimized static asset",
+  "title": "Reusable AppImage component with accessible fallback + refactor BrandLogo and CategoryGrid",
   "requirements": [
     {
-      "id": "REQ-34",
-      "summary": "Add optimized uploaded logo as a generated static asset and replace the current VS logo in the header and home hero.",
+      "id": "REQ-1",
+      "summary": "Add a reusable React/TypeScript AppImage wrapper around <img> with consistent loading/decoding defaults, error handling, and an accessible Tailwind-styled fallback UI.",
       "acceptanceCriteria": [
-        "A new static image file derived from `IMG_20260212_214859~2-1.png` exists under `frontend/public/assets/generated` and is referenced via an `/assets/generated/...` URL.",
-        "`frontend/src/components/SiteHeader.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
-        "`frontend/src/pages/HomePage.tsx` no longer renders `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`; it renders the new uploaded image asset instead.",
-        "The new logo renders correctly on both desktop and mobile layouts without distortion (keeps aspect ratio) and without layout shifts in the header or hero sections."
+        "A new reusable image component exists (e.g., `frontend/src/components/AppImage.tsx`) that wraps an `<img>` element.",
+        "The component supports: `src`, `alt`, `className`, optional `loading`/`decoding`, and an `onError` behavior that shows a fallback UI instead of a broken image icon.",
+        "Fallback UI is accessible (keeps meaningful alt/aria labeling) and visually reasonable with Tailwind styling.",
+        "The component does not rely on backend calls and uses only static asset paths (e.g., `/assets/generated/...`)."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png",
+          "path": "frontend/src/components/AppImage.tsx",
           "operation": "create",
-          "description": "Create a web-optimized PNG derived from `IMG_20260212_214859~2-1.png`, preserving transparent/white background, centered composition, sized to 512x512."
-        },
-        {
-          "path": "frontend/src/components/SiteHeader.tsx",
-          "operation": "modify",
-          "description": "Replace the logo image source `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` with `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` and ensure the rendered logo keeps aspect ratio and reserves space (avoid layout shift) for both desktop and mobile header layouts."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Replace the hero logo image source `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` with `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` and ensure the rendered logo keeps aspect ratio and does not cause layout shifts."
+          "description": "Create `AppImage` React component that wraps an `<img>` with typed props (`src`, `alt`, `className`, optional `loading`/`decoding`) and internal error state that swaps to an accessible, Tailwind-styled fallback container (using the provided alt text via `aria-label` or equivalent) to avoid broken-image icons and keep layout stable."
         }
       ]
     },
     {
-      "id": "REQ-35",
-      "summary": "Remove remaining primary-branding references to the previous VS logo so the new uploaded logo is the only one shown across the app.",
+      "id": "REQ-2",
+      "summary": "Refactor BrandLogo and the service category cards grid to use AppImage while preserving existing sizing, hover/scale styling, and lazy-loading behavior.",
       "acceptanceCriteria": [
-        "Searching the frontend source for `vs-appliances-logo-uploaded.dim_512x512.png` returns zero matches (or only legacy/commented references not used at runtime).",
-        "Previewing key pages (Home, Services, Track Status, Register, My Requests, Admin Login) shows the new uploaded logo in the header consistently."
+        "`frontend/src/components/BrandLogo.tsx` uses the reusable image component and preserves its existing sizing API (`sm`/`md`/`lg`) and fallback behavior.",
+        "`frontend/src/components/CategoryGrid.tsx` uses the reusable image component and preserves existing hover/scale styling and lazy-loading behavior.",
+        "When an image fails to load, the UI does not show a broken image; it shows the defined fallback and the page layout remains stable."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/constants/branding.ts",
-          "operation": "create",
-          "description": "Introduce a single source of truth for branding assets (e.g., exported logo src and alt text) pointing to `/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png` so future pages/components don’t reintroduce the old logo path."
+          "path": "frontend/src/components/BrandLogo.tsx",
+          "operation": "modify",
+          "description": "Replace the direct `<img>` + local error state with `AppImage`, preserving the existing `size` API (`sm`/`md`/`lg`), existing sizing/object-fit classes, eager loading behavior, and the current branded fallback look (rounded block with bg/border) when the logo cannot be loaded."
         },
         {
-          "path": "frontend/src/components/SiteHeader.tsx",
+          "path": "frontend/src/components/CategoryGrid.tsx",
           "operation": "modify",
-          "description": "Refactor to consume the centralized branding constant(s) so no hardcoded legacy logo path remains in the header."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Refactor to consume the centralized branding constant(s) so no hardcoded legacy logo path remains in the hero section."
+          "description": "Replace the category card `<img>` with `AppImage`, preserving lazy loading/async decoding, the existing aspect-ratio container, and hover scale/transition classes; ensure failures render the AppImage fallback (not a hidden `<img>`) so layout remains stable and no broken-image icon appears."
         }
       ]
     }

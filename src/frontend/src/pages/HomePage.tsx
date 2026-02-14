@@ -2,6 +2,7 @@ import CategoryGrid from '../components/CategoryGrid';
 import { Button } from '../components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 import { Wrench, Package, Clock, Shield, Phone } from 'lucide-react';
+import BrandLogo from '../components/BrandLogo';
 import { BRANDING } from '../constants/branding';
 
 export default function HomePage() {
@@ -14,11 +15,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-6 flex justify-center">
-              <img
-                src={BRANDING.logo.src}
-                alt={BRANDING.logo.alt}
-                className="h-20 w-20 object-contain"
-              />
+              <BrandLogo size="lg" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
               VS Home Appliances Spares and Service
@@ -44,6 +41,19 @@ export default function HomePage() {
               Book Now
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="container mx-auto px-4 py-16 bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Our Services</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Select a category to register your service request or order spare parts
+            </p>
+          </div>
+          <CategoryGrid />
         </div>
       </section>
 
@@ -78,19 +88,6 @@ export default function HomePage() {
             <h3 className="font-bold text-lg mb-2 text-foreground">Trusted Service</h3>
             <p className="text-sm text-muted-foreground">Reliable and transparent service you can count on</p>
           </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="container mx-auto px-4 py-16 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Our Services</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Select a category to register your service request or order spare parts
-            </p>
-          </div>
-          <CategoryGrid />
         </div>
       </section>
     </div>

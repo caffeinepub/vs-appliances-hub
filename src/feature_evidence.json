@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-the-user-uploaded-image-img-20260212-214859-2-1-png-as-a-static-asset-under-frontend-public-assets-generated-standardized-optimized-for-web-use-and-replace-the-currently-used-vs-logo-image-assets-generated-vs-appliances-logo-uploaded-dim-512x512-png-with-this-new-asset-everywhere-the-logo-is-rendered-at-minimum-the-header-logo-in-siteheader-and-the-hero-logo-in-homepage",
-      "featureTitle": "Add the user-uploaded image `IMG_20260212_214859~2-1.png` as a static asset under `frontend/public/assets/generated` (standardized/optimized for web use) and replace the currently used VS logo image (`/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`) with this new asset everywhere the logo is rendered (at minimum: the header logo in `SiteHeader` and the hero logo in `HomePage`).",
+      "featureId": "feature-create-a-reusable-react-typescript-image-component-that-encapsulates-common-image-behavior-loading-attributes-error-handling-and-a-visual-fallback-so-the-app-has-a-single-consistent-image-code-pattern",
+      "featureTitle": "Create a reusable React/TypeScript image component that encapsulates common image behavior (loading attributes, error handling, and a visual fallback) so the app has a single, consistent “image code” pattern.",
       "files": [
-        "frontend/src/components/SiteHeader.tsx",
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/components/AppImage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -17,17 +16,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-34"
+        "REQ-1"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-verify-there-are-no-remaining-references-in-the-frontend-codebase-to-assets-generated-vs-appliances-logo-uploaded-dim-512x512-png-or-any-previous-vs-logo-image-for-primary-branding-so-the-uploaded-image-is-the-only-logo-shown-to-customers",
-      "featureTitle": "Verify there are no remaining references in the frontend codebase to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, so the uploaded image is the only logo shown to customers.",
+      "featureId": "feature-refactor-existing-image-usages-to-use-the-new-reusable-image-component-for-consistency-specifically-in-brandlogo-and-the-service-category-cards-grid",
+      "featureTitle": "Refactor existing image usages to use the new reusable image component for consistency, specifically in `BrandLogo` and the service category cards grid.",
       "files": [
-        "frontend/src/components/SiteHeader.tsx",
-        "frontend/src/constants/branding.ts",
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/components/BrandLogo.tsx",
+        "frontend/src/components/CategoryGrid.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -38,7 +36,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-35"
+        "REQ-2"
       ],
       "confidence": "high"
     }

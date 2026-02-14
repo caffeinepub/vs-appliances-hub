@@ -1,9 +1,12 @@
-import { Outlet } from '@tanstack/react-router';
+import { Outlet, useNavigate } from '@tanstack/react-router';
 import SiteHeader from './SiteHeader';
+import ContactInfoCompact from './ContactInfoCompact';
 import { SiFacebook, SiX, SiInstagram } from 'react-icons/si';
 import { Heart } from 'lucide-react';
+import { BRANDING } from '../constants/branding';
 
 export default function PageLayout() {
+  const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const appIdentifier = encodeURIComponent(
     typeof window !== 'undefined' ? window.location.hostname : 'vs-appliances'
@@ -21,19 +24,28 @@ export default function PageLayout() {
             <div>
               <h3 className="font-bold text-lg mb-4 text-foreground">VS Home Appliances</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Professional services and quality spare parts for all your appliance needs in Srikalahasti.
+                Professional services and quality spare parts for all your appliance needs in {BRANDING.location}.
               </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Phone:</strong> 9701078342
-              </p>
+              <div className="space-y-3 mb-4">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Phone:</strong> {BRANDING.phone}
+                </p>
+                <ContactInfoCompact variant="footer" />
+              </div>
+              <button
+                onClick={() => navigate({ to: '/' })}
+                className="text-sm font-medium text-primary hover:underline transition-colors"
+              >
+                {BRANDING.website}
+              </button>
             </div>
             <div>
               <h3 className="font-bold text-lg mb-4 text-foreground">Quick Links</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="/" className="hover:text-primary transition-colors">
+                  <button onClick={() => navigate({ to: '/' })} className="hover:text-primary transition-colors">
                     Home
-                  </a>
+                  </button>
                 </li>
                 <li>
                   <a href="/services" className="hover:text-primary transition-colors">

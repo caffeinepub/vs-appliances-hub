@@ -4,7 +4,8 @@ import { useIsCallerAdmin } from '../hooks/useQueries';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu } from 'lucide-react';
-import LoginButton from './LoginButton';
+import BrandLogo from './BrandLogo';
+import ContactInfoCompact from './ContactInfoCompact';
 import { BRANDING } from '../constants/branding';
 
 export default function SiteHeader() {
@@ -30,35 +31,41 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate({ to: '/' })}>
-            <img
-              src={BRANDING.logo.src}
-              alt={BRANDING.logo.alt}
-              className="h-10 w-10 object-contain"
-            />
-            <span className="font-bold text-lg text-foreground hidden sm:inline">{BRANDING.companyName}</span>
+        <div className="flex h-16 items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate({ to: '/' })}>
+              <BrandLogo size="sm" />
+              <span className="font-bold text-lg text-foreground hidden sm:inline">{BRANDING.companyName}</span>
+            </div>
+            <button
+              onClick={() => navigate({ to: '/' })}
+              className="hidden lg:inline-flex text-sm font-medium text-primary hover:underline transition-colors"
+            >
+              {BRANDING.website}
+            </button>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => (
-              <button
-                key={item.path}
-                onClick={() => navigate({ to: item.path })}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(item.path) ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <LoginButton />
-          </nav>
+          {/* Desktop Navigation with Contact Info */}
+          <div className="hidden md:flex items-center gap-6">
+            <nav className="flex items-center gap-6">
+              {navItems.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate({ to: item.path })}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.path) ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+            <ContactInfoCompact variant="header" mode="phone-location" />
+          </div>
 
           {/* Mobile Menu */}
           <div className="flex md:hidden items-center gap-2">
-            <LoginButton />
+            <ContactInfoCompact variant="header" mode="phone-location" />
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -67,6 +74,15 @@ export default function SiteHeader() {
               </SheetTrigger>
               <SheetContent side="right">
                 <nav className="flex flex-col gap-4 mt-8">
+                  <button
+                    onClick={() => {
+                      navigate({ to: '/' });
+                      setMobileMenuOpen(false);
+                    }}
+                    className="text-left text-base font-medium text-primary hover:underline transition-colors"
+                  >
+                    {BRANDING.website}
+                  </button>
                   {navItems.map((item) => (
                     <button
                       key={item.path}

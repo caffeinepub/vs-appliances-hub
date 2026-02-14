@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Card, CardContent } from './ui/card';
 import { ArrowRight } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../constants/serviceCategories';
+import AppImage from './AppImage';
 
 export default function CategoryGrid() {
   const navigate = useNavigate();
@@ -20,17 +21,13 @@ export default function CategoryGrid() {
         >
           <CardContent className="p-0">
             <div className="aspect-[4/3] overflow-hidden bg-muted">
-              <img
+              <AppImage
                 src={category.image}
                 alt={category.name}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  console.error(`Failed to load image: ${category.image}`);
-                }}
+                fallbackClassName="w-full h-full"
               />
             </div>
             <div className="p-5">

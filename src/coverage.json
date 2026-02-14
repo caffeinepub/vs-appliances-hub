@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T04:47:44.461Z",
+  "generatedAt": "2026-02-13T07:09:00.830Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,32 +11,27 @@
     "implemented": 2,
     "items": [
       {
-        "id": "REQ-34",
-        "summary": "Add the user-uploaded image `IMG_20260212_214859~2-1.png` as a static asset under `frontend/public/assets/generated` (standardized/optimized for web use) and replace the currently used VS logo image (`/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`) with this new asset everywhere the logo is rendered (at minimum: the header logo in `SiteHeader` and the hero logo in `HomePage`).",
+        "id": "REQ-1",
+        "summary": "Create a reusable React/TypeScript image component that encapsulates common image behavior (loading attributes, error handling, and a visual fallback) so the app has a single, consistent “image code” pattern.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png",
-          "frontend/src/components/SiteHeader.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/AppImage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/SiteHeader.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/AppImage.tsx"
         ]
       },
       {
-        "id": "REQ-35",
-        "summary": "Verify there are no remaining references in the frontend codebase to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, so the uploaded image is the only logo shown to customers.",
+        "id": "REQ-2",
+        "summary": "Refactor existing image usages to use the new reusable image component for consistency, specifically in `BrandLogo` and the service category cards grid.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/constants/branding.ts",
-          "frontend/src/components/SiteHeader.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/BrandLogo.tsx",
+          "frontend/src/components/CategoryGrid.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/constants/branding.ts",
-          "frontend/src/components/SiteHeader.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/BrandLogo.tsx",
+          "frontend/src/components/CategoryGrid.tsx"
         ]
       }
     ]
@@ -46,10 +41,9 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/IMG_20260212_214859~2-1.png > IMG_20260212_214859~2-1.dim_512x512.png",
-    "frontend/src/components/SiteHeader.tsx",
-    "frontend/src/constants/branding.ts",
-    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/components/AppImage.tsx",
+    "frontend/src/components/BrandLogo.tsx",
+    "frontend/src/components/CategoryGrid.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

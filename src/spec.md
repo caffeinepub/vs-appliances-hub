@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Replace the current VS Appliances logo across the frontend with the newly uploaded logo image.
+**Goal:** Add a reusable frontend image component with consistent loading attributes and graceful, accessible fallback behavior, then standardize key image usages to use it.
 
 **Planned changes:**
-- Add a web-optimized PNG derived from `IMG_20260212_214859~2-1.png` under `frontend/public/assets/generated` and reference it via an `/assets/generated/...` URL.
-- Update `frontend/src/components/SiteHeader.tsx` to render the new logo asset instead of `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`, preserving aspect ratio and avoiding layout shifts.
-- Update `frontend/src/pages/HomePage.tsx` to render the new logo asset instead of `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png`, preserving aspect ratio and avoiding layout shifts.
-- Verify there are no remaining runtime references to `/assets/generated/vs-appliances-logo-uploaded.dim_512x512.png` (or any previous VS logo image) for primary branding, and confirm key pages show the new logo in the header.
+- Create a reusable React/TypeScript image wrapper component (e.g., `frontend/src/components/AppImage.tsx`) supporting `src`, `alt`, `className`, optional `loading`/`decoding`, and an `onError` fallback UI (no backend calls; static asset paths only).
+- Refactor `frontend/src/components/BrandLogo.tsx` to use the new image component while preserving existing `sm`/`md`/`lg` sizing behavior and current fallback behavior.
+- Refactor `frontend/src/components/CategoryGrid.tsx` to use the new image component while preserving existing hover/scale styling and lazy-loading behavior; ensure layout remains stable on image load failure.
 
-**User-visible outcome:** Customers see the newly uploaded VS logo consistently in the site header (and on the homepage hero) across desktop and mobile, with correct sizing and no distortion.
+**User-visible outcome:** Images (brand logo and category cards) render consistently across the app, and if an image fails to load users see a styled fallback instead of a broken image icon.

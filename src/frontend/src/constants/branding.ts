@@ -5,9 +5,12 @@
 
 export const BRANDING = {
   logo: {
-    src: '/assets/generated/IMG_20260212_214859~2-1.dim_512x512.png',
+    src: '/assets/generated/vs-logo.dim_512x512.png',
     alt: 'VS Home Appliances',
   },
   companyName: 'VS Home Appliances',
   phone: '9701078342',
+  website: 'vsappliance.in',
+  email: 'vsappliancessparesandservice@gmail.com',
+  location: 'Tirupathi, Andhra Pradesh',
 } as const;
