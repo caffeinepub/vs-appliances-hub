@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Add a reusable frontend image component with consistent loading attributes and graceful, accessible fallback behavior, then standardize key image usages to use it.
+**Goal:** Simplify the booking (request registration) form so users only need to provide Name, Phone Number, and Location to submit.
 
 **Planned changes:**
-- Create a reusable React/TypeScript image wrapper component (e.g., `frontend/src/components/AppImage.tsx`) supporting `src`, `alt`, `className`, optional `loading`/`decoding`, and an `onError` fallback UI (no backend calls; static asset paths only).
-- Refactor `frontend/src/components/BrandLogo.tsx` to use the new image component while preserving existing `sm`/`md`/`lg` sizing behavior and current fallback behavior.
-- Refactor `frontend/src/components/CategoryGrid.tsx` to use the new image component while preserving existing hover/scale styling and lazy-loading behavior; ensure layout remains stable on image load failure.
+- Remove the Brand selection UI, including any conditional “Specify Brand” input, from the booking form.
+- Remove the “Request Type” (service/spares) selection from the booking form.
+- Update booking form validation so only Name, Phone Number, and Location are required; all other existing fields (e.g., Category, Address, Description) remain optional and do not block submission.
+- Ensure request creation still succeeds by sending sensible default values for removed fields when calling the existing createRequest flow, and confirm success/detail pages load without client errors.
 
-**User-visible outcome:** Images (brand logo and category cards) render consistently across the app, and if an image fails to load users see a styled fallback instead of a broken image icon.
+**User-visible outcome:** Users can submit a booking using only Name, Phone Number, and Location, without being asked for Brand or Request Type, and the submission flow continues to work end-to-end.

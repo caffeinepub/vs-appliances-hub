@@ -22,7 +22,7 @@ export default function PageLayout() {
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-4 text-foreground">VS Home Appliances</h3>
+              <h3 className="font-bold text-lg mb-4 text-foreground">{BRANDING.companyName}</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Professional services and quality spare parts for all your appliance needs in {BRANDING.location}.
               </p>
@@ -81,7 +81,7 @@ export default function PageLayout() {
           </div>
           <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
             <p>
-              © {currentYear} VS Home Appliances Spares and Service. All rights reserved.
+              © {currentYear} {BRANDING.companyName}. All rights reserved.
             </p>
             <p className="mt-2 flex items-center justify-center gap-1">
               Built with <Heart className="h-4 w-4 fill-primary text-primary" /> using{' '}

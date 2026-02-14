@@ -7,18 +7,26 @@
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-a-reusable-react-typescript-image-component-that-encapsulates-common-image-behavior-loading-attributes-error-handling-and-a-visual-fallback-so-the-app-has-a-single-consistent-image-code-pattern",
-      "title": "Create a reusable React/TypeScript image component that encapsulates common image behavior (loading attributes, error handling, and a visual fallback) so the app has a single, consistent “image code” pattern.",
+      "id": "feature-update-the-booking-request-registration-form-to-remove-the-brand-selection-ui-and-the-request-field-request-type-selection-so-users-are-no-longer-asked-for-those-inputs",
+      "title": "Update the booking (request registration) form to remove the Brand selection UI and the Request field (Request Type selection) so users are no longer asked for those inputs.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-refactor-existing-image-usages-to-use-the-new-reusable-image-component-for-consistency-specifically-in-brandlogo-and-the-service-category-cards-grid",
-      "title": "Refactor existing image usages to use the new reusable image component for consistency, specifically in `BrandLogo` and the service category cards grid.",
+      "id": "feature-change-booking-form-validation-so-that-only-name-phone-number-and-location-are-required-all-other-existing-fields-on-the-page-must-be-optional-no-required-validation-errors",
+      "title": "Change booking form validation so that only Name, Phone Number, and Location are required; all other existing fields on the page must be optional (no required validation errors).",
       "reqIds": [
         "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-request-creation-still-works-after-removing-brand-and-request-inputs-by-providing-sensible-defaults-for-the-removed-fields-when-calling-the-existing-createrequest-mutation-e-g-brand-as-other-with-empty-text-request-type-default-and-empty-strings-for-any-optional-text-fields-not-provided",
+      "title": "Ensure request creation still works after removing Brand and Request inputs by providing sensible defaults for the removed fields when calling the existing createRequest mutation (e.g., Brand as \"other\" with empty text, Request Type default, and empty strings for any optional text fields not provided).",
+      "reqIds": [
+        "REQ-3"
       ],
       "version": 1
     }
@@ -26,12 +34,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Provide/implement 'Image code' (code snippet or integration for displaying/handling images)",
+      "summary": "Update booking form: remove Brand and Request fields; require only Name, Number, and Location",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Add reusable image component (“image code”) with fallback handling",
+  "projectName": "Simplify booking form: remove Brand and Request fields; require only Name, Phone Number, and Location",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

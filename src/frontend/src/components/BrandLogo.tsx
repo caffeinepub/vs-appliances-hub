@@ -8,7 +8,7 @@ interface BrandLogoProps {
 
 export default function BrandLogo({ className = '', size = 'md' }: BrandLogoProps) {
   const sizeClasses = {
-    sm: 'h-10 w-10',
+    sm: 'h-[44px] w-[44px]',
     md: 'h-16 w-16',
     lg: 'h-20 w-20',
   };

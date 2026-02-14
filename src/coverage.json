@@ -1,37 +1,46 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T07:09:00.830Z",
+  "generatedAt": "2026-02-14T03:43:36.158Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Create a reusable React/TypeScript image component that encapsulates common image behavior (loading attributes, error handling, and a visual fallback) so the app has a single, consistent “image code” pattern.",
+        "summary": "Update the booking (request registration) form to remove the Brand selection UI and the Request field (Request Type selection) so users are no longer asked for those inputs.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/AppImage.tsx"
+          "frontend/src/pages/RegisterRequestPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/AppImage.tsx"
+          "frontend/src/pages/RegisterRequestPage.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Refactor existing image usages to use the new reusable image component for consistency, specifically in `BrandLogo` and the service category cards grid.",
+        "summary": "Change booking form validation so that only Name, Phone Number, and Location are required; all other existing fields on the page must be optional (no required validation errors).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/BrandLogo.tsx",
-          "frontend/src/components/CategoryGrid.tsx"
+          "frontend/src/pages/RegisterRequestPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/BrandLogo.tsx",
-          "frontend/src/components/CategoryGrid.tsx"
+          "frontend/src/pages/RegisterRequestPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Ensure request creation still works after removing Brand and Request inputs by providing sensible defaults for the removed fields when calling the existing createRequest mutation (e.g., Brand as \"other\" with empty text, Request Type default, and empty strings for any optional text fields not provided).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/RegisterRequestPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/RegisterRequestPage.tsx"
         ]
       }
     ]
@@ -41,9 +50,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/AppImage.tsx",
-    "frontend/src/components/BrandLogo.tsx",
-    "frontend/src/components/CategoryGrid.tsx",
+    "frontend/src/pages/RegisterRequestPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

@@ -1,43 +1,52 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Reusable AppImage component with accessible fallback + refactor BrandLogo and CategoryGrid",
+  "title": "Simplify booking form to require only Name, Phone Number, and Location",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Add a reusable React/TypeScript AppImage wrapper around <img> with consistent loading/decoding defaults, error handling, and an accessible Tailwind-styled fallback UI.",
+      "summary": "Remove Brand selection UI and Request Type selection from the booking (register request) form.",
       "acceptanceCriteria": [
-        "A new reusable image component exists (e.g., `frontend/src/components/AppImage.tsx`) that wraps an `<img>` element.",
-        "The component supports: `src`, `alt`, `className`, optional `loading`/`decoding`, and an `onError` behavior that shows a fallback UI instead of a broken image icon.",
-        "Fallback UI is accessible (keeps meaningful alt/aria labeling) and visually reasonable with Tailwind styling.",
-        "The component does not rely on backend calls and uses only static asset paths (e.g., `/assets/generated/...`)."
+        "The booking form no longer displays the Brand dropdown and the conditional 'Specify Brand' input.",
+        "The booking form no longer displays the 'Request Type' radio group (service/spares)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/AppImage.tsx",
-          "operation": "create",
-          "description": "Create `AppImage` React component that wraps an `<img>` with typed props (`src`, `alt`, `className`, optional `loading`/`decoding`) and internal error state that swaps to an accessible, Tailwind-styled fallback container (using the provided alt text via `aria-label` or equivalent) to avoid broken-image icons and keep layout stable."
+          "path": "frontend/src/pages/RegisterRequestPage.tsx",
+          "operation": "modify",
+          "description": "Remove the Brand Select UI (including the conditional 'other brand' input) and remove the Request Type radio group from the form. Update related imports, local state, and any label/placeholder text that referenced these removed inputs."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Refactor BrandLogo and the service category cards grid to use AppImage while preserving existing sizing, hover/scale styling, and lazy-loading behavior.",
+      "summary": "Update booking form validation so only Name, Phone Number, and Location are required; all other fields remain optional.",
       "acceptanceCriteria": [
-        "`frontend/src/components/BrandLogo.tsx` uses the reusable image component and preserves its existing sizing API (`sm`/`md`/`lg`) and fallback behavior.",
-        "`frontend/src/components/CategoryGrid.tsx` uses the reusable image component and preserves existing hover/scale styling and lazy-loading behavior.",
-        "When an image fails to load, the UI does not show a broken image; it shows the defined fallback and the page layout remains stable."
+        "Submitting the form with only Name, Phone Number, and Location filled succeeds (assuming the user is authenticated).",
+        "Category, Address, and Description (if still shown) do not block submission when left empty and do not show 'required' validation errors.",
+        "Name and Location are validated as non-empty strings.",
+        "Phone Number is validated as non-empty and continues to use the existing phone-number format validation."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/BrandLogo.tsx",
+          "path": "frontend/src/pages/RegisterRequestPage.tsx",
           "operation": "modify",
-          "description": "Replace the direct `<img>` + local error state with `AppImage`, preserving the existing `size` API (`sm`/`md`/`lg`), existing sizing/object-fit classes, eager loading behavior, and the current branded fallback look (rounded block with bg/border) when the logo cannot be loaded."
-        },
+          "description": "Adjust validateForm() to require only customerName, phoneNumber (keeping the existing regex validation), and location. Ensure category/address/description do not produce required errors when empty, and update UI indicators (e.g., '*' markers and error rendering) accordingly."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Preserve request creation by supplying frontend defaults for removed Brand and Request Type fields when calling the existing createRequest flow.",
+      "acceptanceCriteria": [
+        "The frontend still calls the existing createRequest flow successfully without requiring user input for Brand or Request Type.",
+        "A request created via the simplified form can be opened on the success and detail pages without client errors."
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/components/CategoryGrid.tsx",
+          "path": "frontend/src/pages/RegisterRequestPage.tsx",
           "operation": "modify",
-          "description": "Replace the category card `<img>` with `AppImage`, preserving lazy loading/async decoding, the existing aspect-ratio container, and hover scale/transition classes; ensure failures render the AppImage fallback (not a hidden `<img>`) so layout remains stable and no broken-image icon appears."
+          "description": "Update submit logic to pass sensible defaults to useCreateRequest(): set brand to an 'other' Brand variant with empty text, set requestType to a single default (e.g., RequestType.service), and send empty strings for optional text fields (category/address/description) when not provided. Keep navigation to the existing success route unchanged."
         }
       ]
     }

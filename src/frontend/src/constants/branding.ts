@@ -1,14 +1,14 @@
 /**
- * Centralized branding constants for VS Home Appliances
+ * Centralized branding constants for VS Appliances hub
  * Single source of truth for logo and brand assets
  */
 
 export const BRANDING = {
   logo: {
-    src: '/assets/generated/vs-logo.dim_512x512.png',
-    alt: 'VS Home Appliances',
+    src: '/assets/generated/vs-logo-upload-flat.dim_512x512.png',
+    alt: 'VS Appliances hub',
   },
-  companyName: 'VS Home Appliances',
+  companyName: 'VS Appliances hub',
   phone: '9701078342',
   website: 'vsappliance.in',
   email: 'vsappliancessparesandservice@gmail.com',

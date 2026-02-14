@@ -18,7 +18,7 @@ export default function HomePage() {
               <BrandLogo size="lg" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              VS Home Appliances Spares and Service
+              {BRANDING.companyName}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
               Professional <span className="text-primary font-semibold">Services</span> and Quality{' '}
