@@ -3,30 +3,16 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [],
-  "isFixRequest": false,
+  "known_issues": [
+    "Google Search Console HTML verification failed because the verification file was not found at https://vsapplianceshub.in/googlea74065339385fd9b.html"
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-update-the-booking-request-registration-form-to-remove-the-brand-selection-ui-and-the-request-field-request-type-selection-so-users-are-no-longer-asked-for-those-inputs",
-      "title": "Update the booking (request registration) form to remove the Brand selection UI and the Request field (Request Type selection) so users are no longer asked for those inputs.",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-change-booking-form-validation-so-that-only-name-phone-number-and-location-are-required-all-other-existing-fields-on-the-page-must-be-optional-no-required-validation-errors",
-      "title": "Change booking form validation so that only Name, Phone Number, and Location are required; all other existing fields on the page must be optional (no required validation errors).",
+      "id": "feature-make-the-verification-file-resilient-to-a-trailing-slash-request-by-serving-equivalent-verification-content-for-https-vsapplianceshub-in-googlea74065339385fd9b-html-as-shown-in-the-user-s-google-search-console-flow-without-breaking-the-non-trailing-slash-url",
+      "title": "Make the verification file resilient to a trailing-slash request by serving equivalent verification content for `https://vsapplianceshub.in/googlea74065339385fd9b.html/` (as shown in the user’s Google Search Console flow), without breaking the non-trailing-slash URL.",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-ensure-request-creation-still-works-after-removing-brand-and-request-inputs-by-providing-sensible-defaults-for-the-removed-fields-when-calling-the-existing-createrequest-mutation-e-g-brand-as-other-with-empty-text-request-type-default-and-empty-strings-for-any-optional-text-fields-not-provided",
-      "title": "Ensure request creation still works after removing Brand and Request inputs by providing sensible defaults for the removed fields when calling the existing createRequest mutation (e.g., Brand as \"other\" with empty text, Request Type default, and empty strings for any optional text fields not provided).",
-      "reqIds": [
-        "REQ-3"
       ],
       "version": 1
     }
@@ -34,12 +20,20 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Update booking form: remove Brand and Request fields; require only Name, Number, and Location",
+      "summary": "Upload Google Search Console HTML verification file (googlea74065339385fd9b.html) so it is accessible at site root and verification succeeds",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Ensure the Google Search Console HTML verification file is publicly accessible at the exact site-root path `https://vsapplianceshub.in/googlea74065339385fd9b.html` and returns HTTP 200 with the file body containing `google-site-verification: googlea74065339385fd9b.html`.",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     }
   ],
-  "projectName": "Simplify booking form: remove Brand and Request fields; require only Name, Phone Number, and Location",
+  "projectName": "Fix Google Search Console HTML verification file accessibility at site root",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

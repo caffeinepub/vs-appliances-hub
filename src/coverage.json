@@ -1,46 +1,33 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T03:43:36.158Z",
+  "generatedAt": "2026-02-14T06:50:03.740Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Update the booking (request registration) form to remove the Brand selection UI and the Request field (Request Type selection) so users are no longer asked for those inputs.",
-        "status": "implemented",
+        "summary": "Ensure the Google Search Console HTML verification file is publicly accessible at the exact site-root path `https://vsapplianceshub.in/googlea74065339385fd9b.html` and returns HTTP 200 with the file body containing `google-site-verification: googlea74065339385fd9b.html`.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
+          "frontend/public/googlea74065339385fd9b.html"
         ],
-        "matchedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
-        ]
+        "matchedFiles": []
       },
       {
         "id": "REQ-2",
-        "summary": "Change booking form validation so that only Name, Phone Number, and Location are required; all other existing fields on the page must be optional (no required validation errors).",
+        "summary": "Make the verification file resilient to a trailing-slash request by serving equivalent verification content for `https://vsapplianceshub.in/googlea74065339385fd9b.html/` (as shown in the user’s Google Search Console flow), without breaking the non-trailing-slash URL.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
+          "frontend/public/_redirects"
         ],
         "matchedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Ensure request creation still works after removing Brand and Request inputs by providing sensible defaults for the removed fields when calling the existing createRequest mutation (e.g., Brand as \"other\" with empty text, Request Type default, and empty strings for any optional text fields not provided).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/RegisterRequestPage.tsx"
+          "frontend/public/_redirects"
         ]
       }
     ]
@@ -50,7 +37,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/pages/RegisterRequestPage.tsx",
+    "frontend/public/_redirects",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

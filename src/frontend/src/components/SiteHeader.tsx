@@ -39,9 +39,10 @@ export default function SiteHeader() {
             </div>
             <button
               onClick={() => navigate({ to: '/' })}
-              className="hidden lg:inline-flex text-sm font-medium text-primary hover:underline transition-colors"
+              className="hidden lg:flex flex-col items-start gap-1 text-sm font-medium text-primary hover:opacity-80 transition-opacity"
             >
-              {BRANDING.website}
+              <span className="hover:underline">{BRANDING.website}</span>
+              <BrandLogo size="sm" className="h-[32px] w-[32px]" />
             </button>
           </div>
 
@@ -60,12 +61,12 @@ export default function SiteHeader() {
                 </button>
               ))}
             </nav>
-            <ContactInfoCompact variant="header" mode="phone-location" />
+            <ContactInfoCompact variant="header" mode="phone-email" emailLabel="Email us" />
           </div>
 
           {/* Mobile Menu */}
           <div className="flex md:hidden items-center gap-2">
-            <ContactInfoCompact variant="header" mode="phone-location" />
+            <ContactInfoCompact variant="header" mode="phone-email" emailLabel="Email us" />
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -79,9 +80,10 @@ export default function SiteHeader() {
                       navigate({ to: '/' });
                       setMobileMenuOpen(false);
                     }}
-                    className="text-left text-base font-medium text-primary hover:underline transition-colors"
+                    className="flex flex-col items-start gap-2 text-left text-base font-medium text-primary hover:opacity-80 transition-opacity"
                   >
-                    {BRANDING.website}
+                    <span className="hover:underline">{BRANDING.website}</span>
+                    <BrandLogo size="sm" className="h-[36px] w-[36px]" />
                   </button>
                   {navItems.map((item) => (
                     <button

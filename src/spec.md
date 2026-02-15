@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Simplify the booking (request registration) form so users only need to provide Name, Phone Number, and Location to submit.
+**Goal:** Fix Google Search Console HTML file verification by making the required verification file accessible at the site root (including the trailing-slash variant).
 
 **Planned changes:**
-- Remove the Brand selection UI, including any conditional “Specify Brand” input, from the booking form.
-- Remove the “Request Type” (service/spares) selection from the booking form.
-- Update booking form validation so only Name, Phone Number, and Location are required; all other existing fields (e.g., Category, Address, Description) remain optional and do not block submission.
-- Ensure request creation still succeeds by sending sensible default values for removed fields when calling the existing createRequest flow, and confirm success/detail pages load without client errors.
+- Add/serve a static file at `/googlea74065339385fd9b.html` that returns HTTP 200 with body `google-site-verification: googlea74065339385fd9b.html`.
+- Ensure requests to `/googlea74065339385fd9b.html/` also return HTTP 200 with the same verification body, without breaking the non-trailing-slash URL.
+- Verify the verification file is served as a static asset from the deployed frontend (not handled by a React route).
 
-**User-visible outcome:** Users can submit a booking using only Name, Phone Number, and Location, without being asked for Brand or Request Type, and the submission flow continues to work end-to-end.
+**User-visible outcome:** Google Search Console can successfully fetch the verification file from `https://vsapplianceshub.in/googlea74065339385fd9b.html` (and `.../googlea74065339385fd9b.html/`) and complete ownership verification.

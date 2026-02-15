@@ -1,52 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Simplify booking form to require only Name, Phone Number, and Location",
+  "title": "Google Search Console HTML verification file accessible at site root (with trailing-slash resilience)",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Remove Brand selection UI and Request Type selection from the booking (register request) form.",
+      "summary": "Serve the Google Search Console verification HTML file as a static asset at the exact site-root path with correct body content.",
       "acceptanceCriteria": [
-        "The booking form no longer displays the Brand dropdown and the conditional 'Specify Brand' input.",
-        "The booking form no longer displays the 'Request Type' radio group (service/spares)."
+        "A GET request to `https://vsapplianceshub.in/googlea74065339385fd9b.html` returns HTTP 200.",
+        "The response body contains the exact text `google-site-verification: googlea74065339385fd9b.html`.",
+        "The file is served as a static asset from the deployed frontend (not via a React route)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/RegisterRequestPage.tsx",
+          "path": "frontend/public/googlea74065339385fd9b.html",
           "operation": "modify",
-          "description": "Remove the Brand Select UI (including the conditional 'other brand' input) and remove the Request Type radio group from the form. Update related imports, local state, and any label/placeholder text that referenced these removed inputs."
+          "description": "Ensure the root-level static verification file exists and its contents match exactly `google-site-verification: googlea74065339385fd9b.html` (avoid extra markup; keep it as a plain static asset)."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Update booking form validation so only Name, Phone Number, and Location are required; all other fields remain optional.",
+      "summary": "Make the verification file accessible with a trailing slash while preserving the non-trailing-slash URL.",
       "acceptanceCriteria": [
-        "Submitting the form with only Name, Phone Number, and Location filled succeeds (assuming the user is authenticated).",
-        "Category, Address, and Description (if still shown) do not block submission when left empty and do not show 'required' validation errors.",
-        "Name and Location are validated as non-empty strings.",
-        "Phone Number is validated as non-empty and continues to use the existing phone-number format validation."
+        "A GET request to `https://vsapplianceshub.in/googlea74065339385fd9b.html/` returns HTTP 200 (not 404).",
+        "The trailing-slash response body contains `google-site-verification: googlea74065339385fd9b.html`.",
+        "The non-trailing-slash URL `https://vsapplianceshub.in/googlea74065339385fd9b.html` continues to work as before."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/RegisterRequestPage.tsx",
-          "operation": "modify",
-          "description": "Adjust validateForm() to require only customerName, phoneNumber (keeping the existing regex validation), and location. Ensure category/address/description do not produce required errors when empty, and update UI indicators (e.g., '*' markers and error rendering) accordingly."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Preserve request creation by supplying frontend defaults for removed Brand and Request Type fields when calling the existing createRequest flow.",
-      "acceptanceCriteria": [
-        "The frontend still calls the existing createRequest flow successfully without requiring user input for Brand or Request Type.",
-        "A request created via the simplified form can be opened on the success and detail pages without client errors."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/RegisterRequestPage.tsx",
-          "operation": "modify",
-          "description": "Update submit logic to pass sensible defaults to useCreateRequest(): set brand to an 'other' Brand variant with empty text, set requestType to a single default (e.g., RequestType.service), and send empty strings for optional text fields (category/address/description) when not provided. Keep navigation to the existing success route unchanged."
+          "path": "frontend/public/_redirects",
+          "operation": "create",
+          "description": "Add a static hosting rewrite rule to serve the same verification content for `/googlea74065339385fd9b.html/` as `/googlea74065339385fd9b.html` using a 200 (rewrite) behavior, so the trailing-slash URL returns 200 with the verification body without breaking the non-trailing-slash URL."
         }
       ]
     }

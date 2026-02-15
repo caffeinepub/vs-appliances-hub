@@ -1,66 +1,58 @@
 {
   "kind": "build_request",
-  "title": "Simplify booking form: remove Brand and Request fields; require only Name, Phone Number, and Location",
+  "title": "Fix Google Search Console HTML verification file accessibility at site root",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Update the booking (request registration) form to remove the Brand selection UI and the Request field (Request Type selection) so users are no longer asked for those inputs.",
+      "text": "Ensure the Google Search Console HTML verification file is publicly accessible at the exact site-root path `https://vsapplianceshub.in/googlea74065339385fd9b.html` and returns HTTP 200 with the file body containing `google-site-verification: googlea74065339385fd9b.html`.",
       "target": "frontend",
       "source": {
         "messageIds": [
+          "msg-1",
+          "msg-2",
           "msg-3"
         ],
         "quotes": [
-          "In booking remove brand, Request and only mandate name, number, location"
+          "googlea74065339385fd9b.html",
+          "https://vsapplianceshub.in/googlea74065339385fd9b.html",
+          "Yes upload it"
         ]
       },
       "acceptanceCriteria": [
-        "The booking form no longer displays the Brand dropdown and the conditional 'Specify Brand' input.",
-        "The booking form no longer displays the 'Request Type' radio group (service/spares)."
+        "A GET request to `https://vsapplianceshub.in/googlea74065339385fd9b.html` returns HTTP 200.",
+        "The response body contains the exact text `google-site-verification: googlea74065339385fd9b.html`.",
+        "The file is served as a static asset from the deployed frontend (not via a React route)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Change booking form validation so that only Name, Phone Number, and Location are required; all other existing fields on the page must be optional (no required validation errors).",
+      "text": "Make the verification file resilient to a trailing-slash request by serving equivalent verification content for `https://vsapplianceshub.in/googlea74065339385fd9b.html/` (as shown in the user’s Google Search Console flow), without breaking the non-trailing-slash URL.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-3"
+          "msg-4"
         ],
         "quotes": [
-          "only mandate name, number, location"
+          "Upload to: https://vsapplianceshub.in/googlea74065339385fd9b.html/"
         ]
       },
       "acceptanceCriteria": [
-        "Submitting the form with only Name, Phone Number, and Location filled succeeds (assuming the user is authenticated).",
-        "Category, Address, and Description (if still shown) do not block submission when left empty and do not show 'required' validation errors.",
-        "Name and Location are validated as non-empty strings.",
-        "Phone Number is validated as non-empty and continues to use the existing phone-number format validation."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Ensure request creation still works after removing Brand and Request inputs by providing sensible defaults for the removed fields when calling the existing createRequest mutation (e.g., Brand as \"other\" with empty text, Request Type default, and empty strings for any optional text fields not provided).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The frontend still calls the existing createRequest flow successfully without requiring user input for Brand or Request Type.",
-        "A request created via the simplified form can be opened on the success and detail pages without client errors."
+        "A GET request to `https://vsapplianceshub.in/googlea74065339385fd9b.html/` returns HTTP 200 (not 404).",
+        "The trailing-slash response body contains `google-site-verification: googlea74065339385fd9b.html`.",
+        "The non-trailing-slash URL `https://vsapplianceshub.in/googlea74065339385fd9b.html` continues to work as before."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any files under frontend/src/components/ui (read-only UI component sources).",
-    "Do not modify frontend immutable hook files (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx)."
+    "Do not modify any files under `frontend/src/components/ui` (read-only).",
+    "Do not edit files listed in `frontend.immutablePaths` in SYSTEM_CONTEXT.",
+    "Keep all backend logic in the single Motoko actor (`backend/main.mo`); no backend changes are required for this fix unless static asset serving cannot be achieved otherwise."
   ],
   "nonGoals": [
-    "Changing the backend Motoko createRequest signature or request schema (this update should be achievable via frontend defaults and validation changes).",
-    "Redesigning admin dashboards, filtering, or track-status behavior beyond what is required to keep the simplified booking submission working."
+    "Adding Google Search Console verification via HTML meta tag or DNS verification (only HTML file upload is in scope).",
+    "Changing sitemap.xml or robots.txt contents unless required to fix verification file accessibility.",
+    "Implementing additional SEO features beyond making the verification URL(s) accessible."
   ],
   "imageRequirements": {
     "required": [],

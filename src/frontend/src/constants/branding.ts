@@ -10,7 +10,7 @@ export const BRANDING = {
   },
   companyName: 'VS Appliances hub',
   phone: '9701078342',
-  website: 'vsappliance.in',
+  website: 'VSApplianceshub.in',
   email: 'vsappliancessparesandservice@gmail.com',
   location: 'Tirupathi, Andhra Pradesh',
 } as const;

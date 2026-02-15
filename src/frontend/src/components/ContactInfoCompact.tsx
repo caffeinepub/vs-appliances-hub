@@ -4,13 +4,15 @@ import { BRANDING } from '../constants/branding';
 interface ContactInfoCompactProps {
   className?: string;
   variant?: 'header' | 'footer';
-  mode?: 'email-location' | 'email-phone' | 'phone-location';
+  mode?: 'email-location' | 'email-phone' | 'phone-location' | 'phone-email';
+  emailLabel?: string;
 }
 
 export default function ContactInfoCompact({ 
   className = '', 
   variant = 'header',
-  mode = 'email-location'
+  mode = 'email-location',
+  emailLabel
 }: ContactInfoCompactProps) {
   const textSize = variant === 'header' ? 'text-xs' : 'text-sm';
   const iconSize = variant === 'header' ? 'h-3.5 w-3.5' : 'h-4 w-4';
@@ -38,6 +40,29 @@ export default function ContactInfoCompact({
     );
   }
 
+  if (mode === 'phone-email') {
+    return (
+      <div className={`flex flex-col ${gap} ${className}`}>
+        <a
+          href={`tel:${BRANDING.phone}`}
+          className={`flex items-center ${gap} text-muted-foreground hover:text-primary transition-colors ${textSize}`}
+          aria-label={`Call us at ${BRANDING.phone}`}
+        >
+          <Phone className={iconSize} aria-hidden="true" />
+          <span>{BRANDING.phone}</span>
+        </a>
+        <a
+          href={`mailto:${BRANDING.email}`}
+          className={`flex items-center ${gap} text-muted-foreground hover:text-primary transition-colors ${textSize}`}
+          aria-label={`Email us at ${BRANDING.email}`}
+        >
+          <Mail className={iconSize} aria-hidden="true" />
+          <span>{emailLabel || 'Email us'}</span>
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex flex-col ${gap} ${className}`}>
       <a
@@ -46,7 +71,7 @@ export default function ContactInfoCompact({
         aria-label={`Email us at ${BRANDING.email}`}
       >
         <Mail className={iconSize} aria-hidden="true" />
-        <span className="truncate max-w-[200px]">{BRANDING.email}</span>
+        <span className="truncate max-w-[200px]">{emailLabel || BRANDING.email}</span>
       </a>
       {mode === 'email-location' ? (
         <div

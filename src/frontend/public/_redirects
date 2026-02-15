@@ -1,0 +1,5 @@
+# Google Search Console verification file - handle trailing slash
+/googlea74065339385fd9b.html/ /googlea74065339385fd9b.html 200
+
+# Fallback for SPA routing
+/*    /index.html   200
